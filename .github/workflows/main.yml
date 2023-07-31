@@ -16,12 +16,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Build and run Next.js app
         run: |
           cd app
           npm cache clean --force
+          npm install @types/node
           npm ci
           npm run build
           npm run start
