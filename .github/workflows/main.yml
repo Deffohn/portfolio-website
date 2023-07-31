@@ -85,6 +85,9 @@ jobs:
         run: |
           cd ${{ github.workspace }}/app
           ${{ steps.detect-package-manager.outputs.runner }} next export
+      - name: Create out Path
+        run: |
+          mkdir out
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
