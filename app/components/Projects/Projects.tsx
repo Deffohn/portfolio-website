@@ -13,29 +13,32 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
   {contentInput}
 ) => {
   return (
-    <div>
-      <ul>
+    <div className={styles.project}>
+      <ul className={styles.projectContent}>
         <li>
           { 
             contentInput.illustrationPath != null ?
             <Image width={100} height={100}
               src={contentInput.illustrationPath}
               alt={"\""+contentInput.projectName+"\""+" Project Picture"}
+              className={styles.projectPicture}
             />
             :
             <Image width={100} height={100}
               src={"/projects/default.png"}
               alt={"Default Project Picture"}
+              className={styles.projectPicture}
             />
           }
         </li>
         <li>
-          {contentInput.projectName}
+          <a>{contentInput.projectName}</a>
+          
         </li>
         <li>
           { 
             contentInput.projectDescription &&
-            <div>{contentInput.projectDescription}</div>
+            <a>{contentInput.projectDescription}</a>
           }
         </li>
       </ul>
@@ -61,17 +64,25 @@ const projects: ProjectContentInput[] = [
   }
 ]
 
+const renderProjects: React.FC = () => {
+
+}
+
 const Projects: React.FC = () => {
 
   return (
     <div>
       <h2>Projects</h2>
-      {projects.map((value: ProjectContentInput) => {
-        return (
-          // eslint-disable-next-line react/jsx-key
-          <ProjectComponent contentInput={value}/>
-        );
-      })}
+      <ul className={styles.projectList}>
+        {projects.map((value: ProjectContentInput) => {
+          return (
+            // eslint-disable-next-line react/jsx-key
+            <li>
+              <ProjectComponent contentInput={value}/>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
