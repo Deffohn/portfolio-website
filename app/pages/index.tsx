@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from '../components/Navbar/Navbar';
-import Projects from '../components/Projects';
+import Projects from '../components/Projects/Projects';
 import Jobs from '../components/Jobs';
 import Studies from '../components/Studies';
 import Header from '../components/Header/Header';
