@@ -5,7 +5,8 @@ type ProjectContentInput = {
   illustrationPath?: string,
   projectName: string,
   projectDescription?: string,
-  projectTags?: string[]
+  projectTags?: string[],
+  projectLinks?: string[]
 }
 
 const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
@@ -53,6 +54,9 @@ const projects: ProjectContentInput[] = [
       "CICD",
       "Github Actions",
       "Front"
+    ],
+    projectLinks: [
+      "https://github.com/Deffohn/portfolio-website"
     ]
   }
 ]
