@@ -65,7 +65,7 @@ const projects: ProjectContentInput[] = [
 ]
 
 const renderProjects: React.FC = () => {
-
+  return (<div></div>);
 }
 
 const Projects: React.FC = () => {
