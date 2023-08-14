@@ -32,13 +32,13 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
           }
         </li>
         <li>
-          <a>{contentInput.projectName}</a>
+          <h3>{contentInput.projectName}</h3>
           
         </li>
         <li>
           { 
             contentInput.projectDescription &&
-            <a>{contentInput.projectDescription}</a>
+            <a className={styles.projectContentTextDescription}>{contentInput.projectDescription}</a>
           }
         </li>
       </ul>
