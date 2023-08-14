@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './Projects.module.css';
 
 type ProjectContentInput = {
@@ -18,14 +17,12 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         <li>
           { 
             contentInput.illustrationPath != null ?
-            <Image width={100} height={100}
-              src={contentInput.illustrationPath}
+            <img src={contentInput.illustrationPath}
               alt={"\""+contentInput.projectName+"\""+" Project Picture"}
               className={styles.projectPicture}
             />
             :
-            <Image width={100} height={100}
-              src={"/projects/default.png"}
+            <img src={"/projects/default.png"}
               alt={"Default Project Picture"}
               className={styles.projectPicture}
             />
@@ -38,7 +35,9 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         <li>
           { 
             contentInput.projectDescription &&
-            <a className={styles.projectContentTextDescription}>{contentInput.projectDescription}</a>
+            <a className={styles.projectContentTextDescription}>
+              {contentInput.projectDescription}
+            </a>
           }
         </li>
       </ul>
@@ -63,10 +62,6 @@ const projects: ProjectContentInput[] = [
     ]
   }
 ]
-
-const renderProjects: React.FC = () => {
-  return (<div></div>);
-}
 
 const Projects: React.FC = () => {
 

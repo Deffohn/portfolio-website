@@ -11,7 +11,9 @@ const Header: React.FC = () => {
         <img src="/maxime-parmentier-1.png" alt="Maxime Parmentier Profile Photo" className={styles.headerPhoto} />
         <div className={styles.headerTexts}>
           <h2>Maxime Parmentier</h2>
-          <p>Soon to be graduated Software Engineer - Cloud Computing DevOps Engineer</p>
+          <p>
+            Soon to be graduated Software Engineer - Cloud Computing DevOps Engineer
+          </p>
         </div>
       </li>
     </ul>
