@@ -30,7 +30,9 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         </li>
         <li>
           <h3>{contentInput.projectName}</h3>
-          
+        </li>
+        <li>
+          <hr/>
         </li>
         <li>
           { 
@@ -69,10 +71,10 @@ const Projects: React.FC = () => {
     <div>
       <h2>Projects</h2>
       <ul className={styles.projectList}>
-        {projects.map((value: ProjectContentInput) => {
+        {projects.map((value: ProjectContentInput, i) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <li>
+            <li key={i}>
               <ProjectComponent contentInput={value}/>
             </li>
           );

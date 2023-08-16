@@ -53,6 +53,14 @@
   margin-bottom: 10px;
 }
 
+.projectContent hr {
+  height: 2px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: none;
+  background: rgb(92, 92, 92);
+}
+
 .projectPicture {
   display: block;
   margin-left: auto;
