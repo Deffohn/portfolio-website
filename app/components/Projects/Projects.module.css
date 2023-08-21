@@ -8,6 +8,10 @@
     width: 50%;
     height: 50%;
   }
+
+  .projectContentTagItem {
+    margin-left: 2px;
+  }
 }
 
 @media only screen and (max-width: 850px) {
@@ -20,6 +24,11 @@
     width: 30%;
     height: 30%;
   }
+
+  .projectContentTagsList {
+    justify-content: space-between;
+  }
+
 }
 
 .project {
@@ -47,7 +56,6 @@
 
 .projectContent {
   flex: 1;
-  margin-bottom: 10px;
 }
 
 .projectPicture {
@@ -109,4 +117,26 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.projectContentTagsList {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.projectContentTagItem {
+  display: wrap;
+  vertical-align: middle;
+  background: rgb(92, 92, 92);
+  border-radius: 5%;
+  margin-left: 5px;
+  margin-bottom: 5px;
+}
+
+.projectContentTagText {
+  display: flex;
+  margin: 5px;
+  color: white;
+  text-align: center;
 }

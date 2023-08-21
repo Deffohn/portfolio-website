@@ -85,6 +85,23 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
           </div>
           
         }
+        { /* {project tags} */
+          contentInput.projectTags && contentInput.projectTags?.length != 0 &&
+
+          <div className={styles.projectContentTagsList}>
+            {
+              contentInput.projectTags.map((tag: string, projectTagIndex) => {
+                return (
+                  <div className={styles.projectContentTagItem}>
+                    <a key={projectTagIndex} className={styles.projectContentTagText}>
+                      {tag}
+                    </a>
+                  </div>
+                );
+              })
+            }
+          </div>
+        }
         
       </div>
     </div>
@@ -95,13 +112,14 @@ const projects: ProjectContentInput[] = [
   {
     illustrationPath: "/projects/portfolio.png",
     projectName: "This same Portfolio you are currently looking at",
-    projectDescription: "This Project of portfolio as a tool of joining some of my abouts, but also as practising project of my software developer skills",
+    projectDescription: "This portfolio project serves as a means to consolidate various aspects of my endeavors, while also acting as a practical showcase of my software development skills.",
     projectTags: [
       "NextJS",
+      "React",
       "Typescript",
       "CICD",
       "Github Actions",
-      "Front"
+      "Frontend"
     ],
     projectLinks: [
       "https://github.com/Deffohn/portfolio-website"
