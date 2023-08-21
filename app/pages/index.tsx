@@ -5,10 +5,16 @@ import Jobs from '../components/Jobs';
 import Studies from '../components/Studies';
 import Header from '../components/Header/Header';
 import styles from './Home.module.css';
+import Head from 'next/head';
 
 const Home: React.FC = () => {
   return (
     <div className={styles.home}>
+      
+      <Head>
+        <title>Maxime Parmentier Portfolio</title>
+      </Head>
+
       <Navbar />
       <Header />
       <main>
