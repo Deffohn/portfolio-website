@@ -92,8 +92,8 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
             {
               contentInput.projectTags.map((tag: string, projectTagIndex) => {
                 return (
-                  <div className={styles.projectContentTagItem}>
-                    <a key={projectTagIndex} className={styles.projectContentTagText}>
+                  <div key={projectTagIndex} className={styles.projectContentTagItem}>
+                    <a className={styles.projectContentTagText}>
                       {tag}
                     </a>
                   </div>
