@@ -13,8 +13,8 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
 ) => {
   return (
     <div className={styles.project}>
-      <ul className={styles.projectContent}>
-        <li>
+      <div className={styles.projectContentList}>
+        <div className={styles.projectContent}>
           { 
             contentInput.illustrationPath != null ?
             <img src={contentInput.illustrationPath}
@@ -27,22 +27,26 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
               className={styles.projectPicture}
             />
           }
-        </li>
-        <li>
-          <h3>{contentInput.projectName}</h3>
-        </li>
-        <li>
+        </div>
+        <div className={styles.projectContent}>
+          <div className={styles.projectContentText}>
+            <h3>{contentInput.projectName}</h3>
+          </div>
+        </div>
+        <div className={styles.projectContent}>
           <hr/>
-        </li>
-        <li>
-          { 
-            contentInput.projectDescription &&
-            <a className={styles.projectContentTextDescription}>
-              {contentInput.projectDescription}
-            </a>
-          }
-        </li>
-      </ul>
+        </div>
+        <div className={styles.projectContent}>
+          <div className={styles.projectContentText}>
+            { 
+              contentInput.projectDescription &&
+              <a className={styles.projectContentTextDescription}>
+                {contentInput.projectDescription}
+              </a>
+            }
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -62,24 +66,39 @@ const projects: ProjectContentInput[] = [
     projectLinks: [
       "https://github.com/Deffohn/portfolio-website"
     ]
+  },
+  {
+    illustrationPath: "/projects/portfolio.png",
+    projectName: "This same Portfolio you are currently looking at",
+    projectDescription: "This Project of portfolio as a tool of joining some of my abouts, but also as practising project of my software developer skills",
+    projectTags: [
+      "NextJS",
+      "Typescript",
+      "CICD",
+      "Github Actions",
+      "Front"
+    ],
+    projectLinks: [
+      "https://github.com/Deffohn/portfolio-website"
+    ]
   }
+
 ]
 
 const Projects: React.FC = () => {
-
   return (
     <div>
       <h2>Projects</h2>
-      <ul className={styles.projectList}>
+      <div className={styles.projectList}>
         {projects.map((value: ProjectContentInput, i) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <li key={i}>
+            <div key={i}>
               <ProjectComponent contentInput={value}/>
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 };
