@@ -1,7 +1,7 @@
 @media only screen and (min-width: 850px) {
   .project {
     width: 320px;
-    height: 480px;
+    min-height: 480px;
   }
 
   .projectPicture {
@@ -92,4 +92,21 @@
   text-align: center;
   color: white;
   text-decoration: none;
+}
+
+.projectContentLinkList {
+  display: flex;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  align-items: left;
+  justify-content: center;
+}
+
+.projectContentLink {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }

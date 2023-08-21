@@ -1,4 +1,5 @@
 import styles from './Projects.module.css';
+import Image from 'next/image';
 
 type ProjectContentInput = {
   illustrationPath?: string,
@@ -46,27 +47,51 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
             }
           </div>
         </div>
+        { /* {project links} */
+          contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
+          
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "column"
+          }}>
+
+          <div className={styles.projectContent}>
+            <hr/>
+          </div>
+          <div className={styles.projectContent}>
+            <div className={styles.projectContentLinkList}>
+              {
+                contentInput.projectLinks.map((link: string) => {
+                  return (
+                    <a href={link}
+                      className={styles.projectContentLink}
+                      title={link}
+                    >
+                      <Image
+                        src={"High-contrast-emblem-symbolic-link.png"}
+                        alt={link}
+                        width={25}
+                        height={25}
+                      />  
+                    </a>
+                  );
+                })
+              }
+              
+            </div>
+          </div>
+
+          </div>
+          
+        }
+        
       </div>
     </div>
   );
 };
 
 const projects: ProjectContentInput[] = [
-  {
-    illustrationPath: "/projects/portfolio.png",
-    projectName: "This same Portfolio you are currently looking at",
-    projectDescription: "This Project of portfolio as a tool of joining some of my abouts, but also as practising project of my software developer skills",
-    projectTags: [
-      "NextJS",
-      "Typescript",
-      "CICD",
-      "Github Actions",
-      "Front"
-    ],
-    projectLinks: [
-      "https://github.com/Deffohn/portfolio-website"
-    ]
-  },
   {
     illustrationPath: "/projects/portfolio.png",
     projectName: "This same Portfolio you are currently looking at",
