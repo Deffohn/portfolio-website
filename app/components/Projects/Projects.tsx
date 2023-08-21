@@ -62,9 +62,9 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
           <div className={styles.projectContent}>
             <div className={styles.projectContentLinkList}>
               {
-                contentInput.projectLinks.map((link: string) => {
+                contentInput.projectLinks.map((link: string, projectLinkIndex) => {
                   return (
-                    <a href={link}
+                    <a key={projectLinkIndex} href={link}
                       className={styles.projectContentLink}
                       title={link}
                     >
@@ -115,10 +115,9 @@ const Projects: React.FC = () => {
     <div>
       <h2>Projects</h2>
       <div className={styles.projectList}>
-        {projects.map((value: ProjectContentInput, i) => {
+        {projects.map((value: ProjectContentInput, projectIndex) => {
           return (
-            // eslint-disable-next-line react/jsx-key
-            <div key={i}>
+            <div key={projectIndex}>
               <ProjectComponent contentInput={value}/>
             </div>
           );
