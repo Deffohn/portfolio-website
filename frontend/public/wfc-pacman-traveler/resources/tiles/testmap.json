@@ -1,0 +1,44 @@
+[
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 0,
+            "y": 0
+        }
+    },
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 1,
+            "y": 0
+        }
+    },
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 2,
+            "y": 0
+        }
+    },
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 0,
+            "y": 1
+        }
+    },
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 1,
+            "y": 1
+        }
+    },
+    {
+        "useTile": "testtile",
+        "position": {
+            "x": 2,
+            "y": 1
+        }
+    }
+]
