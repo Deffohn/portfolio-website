@@ -15,7 +15,8 @@ export default class TestScene extends Scene {
     D: undefined
   };
 
-  private pacman: Phaser.GameObjects.Sprite | undefined;
+  private pacman!: Phaser.GameObjects.Sprite;
+  private testtile!: Phaser.GameObjects.Image;
 
   preload () {
     this.load.image('testtile', '/wfc-pacman-traveler/resources/tiles/testtile.png')
@@ -27,7 +28,7 @@ export default class TestScene extends Scene {
   }
 
   create() {
-    this.add.image(0, 0, 'testtile');
+    this.testtile = this.add.image(0, 0, 'testtile');
 
     this.pacman = this.add.sprite(0, 0, 'pacman');
 
@@ -42,17 +43,21 @@ export default class TestScene extends Scene {
   }
 
   update() {
-    if (this.cursors.W?.isDown && this.pacman != undefined) {
+    if (this.cursors.W?.isDown) {
       this.pacman.y -= 4;
+      console.log(this.pacman.x+", "+this.pacman.y)
     }
-    if (this.cursors.S?.isDown && this.pacman != undefined) {
+    if (this.cursors.S?.isDown) {
       this.pacman.y += 4;
+      console.log(this.pacman.x+", "+this.pacman.y)
     }
-    if (this.cursors.A?.isDown && this.pacman != undefined) {
+    if (this.cursors.A?.isDown) {
       this.pacman.x -= 4;
+      console.log(this.pacman.x+", "+this.pacman.y)
     }
-    if (this.cursors.D?.isDown && this.pacman != undefined) {
+    if (this.cursors.D?.isDown) {
       this.pacman.x += 4;
+      console.log(this.pacman.x+", "+this.pacman.y)
     }
   }
 }

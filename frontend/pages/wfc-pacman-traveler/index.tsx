@@ -1,5 +1,7 @@
 import {Game as Gametype} from "phaser";
 
+const gameBorder: integer = 10 // px
+
 const Game = () => {
 
     var game: Gametype;
@@ -19,8 +21,8 @@ const Game = () => {
             title: 'WFC Pacman Traveler',
             parent: 'game-content',
 
-            width: screenWidth,
-            height: screenHeight,
+            width: screenWidth - 2 * gameBorder,
+            height: screenHeight - 2 * gameBorder,
             pixelArt: true,
             scale: {
                 zoom: 1
@@ -39,6 +41,10 @@ const Game = () => {
         });
 
         game = phaserGame;
+
+        return () => {
+          game.destroy(true);
+        };
 
     }
     
