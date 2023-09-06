@@ -13,7 +13,9 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
   {contentInput}
 ) => {
   return (
-    <div className={styles.project}>
+    <div className='bg-black rounded-md border-4 border-gray-500 m-2.5
+      mg:w-320 mg:min-h-480
+    '>
       <div className={styles.projectContentList}>
         <div className={styles.projectContent}>
           { 
@@ -131,7 +133,7 @@ const projects: ProjectContentInput[] = [
 const Projects: React.FC = () => {
   return (
     <div>
-      <h2>Projects</h2>
+      <h2 className='text-3xl font-bold ml-2'>Projects</h2>
       <div className={styles.projectList}>
         {projects.map((value: ProjectContentInput, projectIndex) => {
           return (
