@@ -1,3 +1,5 @@
+import { Obstacle } from "./Obstacle";
+
 export enum Direction {
   Up,
   Down,
@@ -5,36 +7,14 @@ export enum Direction {
   Right,
 }
 
-export class PacmanPlayer implements Position {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  move(direction: Direction) {
-    switch (direction) {
-      case Direction.Up:
-        this.y--;
-        break;
-      case Direction.Down:
-        this.y++;
-        break;
-      case Direction.Left:
-        this.x--;
-        break;
-      case Direction.Right:
-        this.x++;
-        break;
-    }
-  }
-  
+export interface MapChunk {
+  tiles: MapTile[],
+  position: Position,
 }
 
-export interface MapChunk {
-  tiles: GameTile[],
+export interface Chunk {
+  obstacles: Obstacle[],
+
   position: Position,
 }
 
@@ -55,17 +35,12 @@ export interface Position {
   y: number,
 }
 
-export interface Border {
-  upWall: boolean,
-  leftWall: boolean,
-  downWall: boolean,
-  rightWall: boolean,
+export interface Path {
+  up: boolean,
+  left: boolean,
 }
 
-export interface Tile extends Position {
-  border: Border,
-}
-
-export interface GameTile extends Tile {
+export interface MapTile extends Position {
+  path: Path,
   mana: Mana | null,
 }

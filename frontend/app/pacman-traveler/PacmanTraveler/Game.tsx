@@ -1,9 +1,14 @@
 import { useEffect, useRef } from "react";
-import { gameMap, mapChunkSize, pacmanPlayerImage, tileFullOpenPath } from "./gameAssets";
-import { Direction, MapChunk, PacmanPlayer, Tile } from "./mapTypes";
+import { gameMap, mapChunkSize, pacmanSize, pacmanSpeed } from "./gameAssets";
+import { Chunk, Direction } from "./mapTypes";
+import { PacmanPlayer } from "./PacmanPlayer";
+import { Obstacle } from "./Obstacle";
 
-const tileWidthPx = 32;
-const tileHeightPx = 32;
+const tileRatioPx = 48;
+const tileWidthPx = tileRatioPx;
+const tileHeightPx = tileRatioPx;
+
+const pacmanPlayerImageSrc = "pacman-traveler/resources/pacman.png";
 
 // create absolute object storing pressed keys
 const pressedKeys = {
@@ -25,64 +30,60 @@ const Game = () => {
 
     const pacman = new PacmanPlayer(
       mapChunkSize / 2, mapChunkSize / 2,
+      pacmanSize,
     );
+
+    const pacmanPlayerImage = new Image();
+    pacmanPlayerImage.src = pacmanPlayerImageSrc;
 
     setInterval(() => {
 
       // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      let obstacles: Obstacle[] = gameMap.flatMap((chunk : Chunk) => chunk.obstacles);
+
+      // TODO handle multiple keys pressed at once
       if (pressedKeys.arrowUp) {
-        pacman.move(Direction.Up);
+        pacman.move(Direction.Up, pacmanSpeed, obstacles);
         pressedKeys.arrowUp = false;
       } if (pressedKeys.arrowDown) {
-        pacman.move(Direction.Down);
+        pacman.move(Direction.Down, pacmanSpeed, obstacles);
         pressedKeys.arrowDown = false;
       } if (pressedKeys.arrowLeft) {
-        pacman.move(Direction.Left);
+        pacman.move(Direction.Left, pacmanSpeed, obstacles);
         pressedKeys.arrowLeft = false;
       } if (pressedKeys.arrowRight) {
-        pacman.move(Direction.Right);
+        pacman.move(Direction.Right, pacmanSpeed, obstacles);
         pressedKeys.arrowRight = false;
       }
       
-      gameMap.forEach((chunk : MapChunk) => {
+      // draw tiles
+      gameMap.forEach((chunk : Chunk) => {
 
-        chunk.tiles.forEach((tile : Tile) => {
-          ctx.drawImage(
-            // image
-            tileFullOpenPath,
-
-            // position on canvas
-            tile.x * tileWidthPx,
-            tile.y * tileHeightPx,
-
-            // px size on canvas
-            tileWidthPx,
-            tileHeightPx,
-          );
-        })
+        chunk.obstacles.forEach((obstacle : Obstacle) => {
+          obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx);
+        });
       });
 
       // draw pacman
       ctx.drawImage(
-        // image
         pacmanPlayerImage,
 
         // position on canvas
-        pacman.x * 3,
-        pacman.y * 3,
+        (pacman.x - pacmanSize / 2) * tileRatioPx,
+        (pacman.y - pacmanSize / 2) * tileRatioPx,
 
         // px size on canvas
-        tileWidthPx/3,
-        tileHeightPx/3,
+        tileWidthPx * pacmanSize,
+        tileHeightPx * pacmanSize,
       );
-    }, 50 /* ms */);
+    }, 50 /* ms, frame rate */);
 
   }, []);
 
   const handleKeyDown = (e : React.KeyboardEvent<HTMLCanvasElement>) => {
-    console.log(e.key);
+    // console.log(e.key);
 
     if (e.key === 'w') {
       pressedKeys.arrowUp = true;

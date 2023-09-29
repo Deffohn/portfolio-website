@@ -1,30 +1,26 @@
-import { GameTile, MapChunk, Position } from "./mapTypes";
+import { Obstacle, RectangleObstacle } from "./Obstacle";
+import { Chunk, MapChunk, MapTile, Position } from "./mapTypes";
 
 export const mapChunkSize: number = 12;
 
-export const pacmanPlayerImage = new Image();
-pacmanPlayerImage.src = "pacman-traveler/resources/pacman.png";
+export const pacmanSize = 0.5; // ratio of tile size
+export const pacmanSpeed = 0.1; // ratio of tile size, do prefer 1/n where n is integer 
 
-const tilesLocation = "pacman-traveler/resources/tiles/";
 
-export const tileFullOpenPath = new Image();
-tileFullOpenPath.src = tilesLocation + "full_open_path_tile.png";
-
+// make a borderUpImage yellow which is a rectangle
 
 const generateEmptyChunk = (position: Position): MapChunk => {
-  const tiles: GameTile[] = [];
+  const tiles: MapTile[] = [];
   for (let i = 0; i < mapChunkSize; i++) {
     for (let j = 0; j < mapChunkSize; j++) {
       tiles.push({
         x: position.x + i,
         y: position.y + j,
-        border: {
-          upWall: false,
-          leftWall: false,
-          downWall: false,
-          rightWall: false
+        path: {
+          up: true,
+          left: true,
         },
-        mana: null
+        mana: null,
       });
     }
   }
@@ -34,7 +30,10 @@ const generateEmptyChunk = (position: Position): MapChunk => {
   };
 };
 
-const generateThreeByThreeChunks = ( chunkGenerator: (position: Position) => MapChunk) => {
+const generateThreeByThreeChunks = ( 
+  chunkGenerator: (position: Position) => MapChunk
+
+) => {
   const map: MapChunk[] = [];
   for (let i = -1; i < 2; i++) {
     for (let j = -1; j < 2; j++) {
@@ -48,4 +47,33 @@ const generateThreeByThreeChunks = ( chunkGenerator: (position: Position) => Map
   return map;
 };
 
-export const gameMap: MapChunk[] = generateThreeByThreeChunks(generateEmptyChunk);
+const mapChunks: MapChunk[] = generateThreeByThreeChunks(generateEmptyChunk);
+
+// then generate objects and assign images (here obstacles "borders" of each tile)
+
+const generateObjectsAndObstaclesOnChunk = (chunk: MapChunk): Chunk => {
+
+  const obstacles: Obstacle[] = [];
+
+  // generate tile obstacles "borders"
+  chunk.tiles.forEach(tile => {
+    if (!tile.path.up) {
+      obstacles.push(new RectangleObstacle(tile.x, tile.y, 1, 0.1));
+    }
+    if (!tile.path.left) {
+      obstacles.push(new RectangleObstacle(tile.x, tile.y, 0.1, 1));
+    }
+  });
+
+  return {
+    obstacles,
+    position: chunk.position,
+  };
+}
+
+export const gameMap: Chunk[] = mapChunks.map(
+  (mapChunk) => generateObjectsAndObstaclesOnChunk(mapChunk)
+);
+
+// add example obstacle to the map
+gameMap[4].obstacles.push(new RectangleObstacle(6, 7, 1, 0.1));
