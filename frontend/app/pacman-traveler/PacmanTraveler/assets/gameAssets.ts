@@ -1,13 +1,10 @@
-import { Obstacle, RectangleObstacle } from "./Obstacle";
-import { Chunk, MapChunk, MapTile, Position } from "./mapTypes";
+import { Obstacle, RectangleObstacle } from "../Obstacle";
+import { Chunk, MapChunk, MapTile, Position } from "../mapTypes";
 
 export const mapChunkSize: number = 12;
 
 export const pacmanSize = 0.5; // ratio of tile size
-export const pacmanSpeed = 0.1; // ratio of tile size, do prefer 1/n where n is integer 
-
-
-// make a borderUpImage yellow which is a rectangle
+export const pacmanSpeed = 0.06; // ratio of tile size, do prefer 1/n where n is integer 
 
 const generateEmptyChunk = (position: Position): MapChunk => {
   const tiles: MapTile[] = [];
@@ -19,6 +16,27 @@ const generateEmptyChunk = (position: Position): MapChunk => {
         path: {
           up: true,
           left: true,
+        },
+        mana: null,
+      });
+    }
+  }
+  return {
+    tiles,
+    position
+  };
+};
+
+const generateSampleChunk = (position: Position): MapChunk => {
+  const tiles: MapTile[] = [];
+  for (let i = 0; i < mapChunkSize; i++) {
+    for (let j = 0; j < mapChunkSize; j++) {
+      tiles.push({
+        x: position.x + i,
+        y: position.y + j,
+        path: {
+          up: true,
+          left: Math.random() > 0.5,
         },
         mana: null,
       });
@@ -47,7 +65,7 @@ const generateThreeByThreeChunks = (
   return map;
 };
 
-const mapChunks: MapChunk[] = generateThreeByThreeChunks(generateEmptyChunk);
+const mapChunks: MapChunk[] = generateThreeByThreeChunks(generateSampleChunk);
 
 // then generate objects and assign images (here obstacles "borders" of each tile)
 
@@ -74,6 +92,3 @@ const generateObjectsAndObstaclesOnChunk = (chunk: MapChunk): Chunk => {
 export const gameMap: Chunk[] = mapChunks.map(
   (mapChunk) => generateObjectsAndObstaclesOnChunk(mapChunk)
 );
-
-// add example obstacle to the map
-gameMap[4].obstacles.push(new RectangleObstacle(6, 7, 1, 0.1));

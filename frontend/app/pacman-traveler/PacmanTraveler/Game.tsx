@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { gameMap, mapChunkSize, pacmanSize, pacmanSpeed } from "./gameAssets";
+import { gameMap, mapChunkSize, pacmanSize, pacmanSpeed } from "./assets/gameAssets";
 import { Chunk, Direction } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
@@ -18,10 +18,51 @@ const pressedKeys = {
   arrowRight: false,
 };
 
+const handleKeyDown = (e: { key: string; }) => {
+  // console.log(e.key);
+
+  if (e.key === 'w') {
+    pressedKeys.arrowUp = true;
+  } if (e.key === 's') {
+    pressedKeys.arrowDown = true;
+  } if (e.key === 'a') {
+    pressedKeys.arrowLeft = true;
+  } if (e.key === 'd') {
+    pressedKeys.arrowRight = true;
+  }
+}
+
+const handleKeyUp = (e: { key: string; }) => {
+  // console.log(e.key);
+
+  if (e.key === 'w') {
+    pressedKeys.arrowUp = false;
+  } if (e.key === 's') {
+    pressedKeys.arrowDown = false;
+  } if (e.key === 'a') {
+    pressedKeys.arrowLeft = false;
+  } if (e.key === 'd') {
+    pressedKeys.arrowRight = false;
+  }
+}
+
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    // Add event listeners for keydown and keyup events
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    // Clean up event listeners when the component unmounts
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  useEffect(() => {
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -29,7 +70,7 @@ const Game = () => {
     if (!ctx) return;
 
     const pacman = new PacmanPlayer(
-      mapChunkSize / 2, mapChunkSize / 2,
+      (mapChunkSize + 1) / 2, (mapChunkSize + 1) / 2,
       pacmanSize,
     );
 
@@ -44,18 +85,19 @@ const Game = () => {
       let obstacles: Obstacle[] = gameMap.flatMap((chunk : Chunk) => chunk.obstacles);
 
       // TODO handle multiple keys pressed at once
+      let direction: Direction = new Direction(0, 0);
       if (pressedKeys.arrowUp) {
-        pacman.move(Direction.Up, pacmanSpeed, obstacles);
-        pressedKeys.arrowUp = false;
+        direction.y += -1;
       } if (pressedKeys.arrowDown) {
-        pacman.move(Direction.Down, pacmanSpeed, obstacles);
-        pressedKeys.arrowDown = false;
+        direction.y += 1;
       } if (pressedKeys.arrowLeft) {
-        pacman.move(Direction.Left, pacmanSpeed, obstacles);
-        pressedKeys.arrowLeft = false;
+        direction.x += -1;
       } if (pressedKeys.arrowRight) {
-        pacman.move(Direction.Right, pacmanSpeed, obstacles);
-        pressedKeys.arrowRight = false;
+        direction.x += 1;
+      }
+
+      if (direction.x !== 0 || direction.y !== 0) {
+        pacman.move(direction, pacmanSpeed, obstacles);
       }
       
       // draw tiles
@@ -64,6 +106,7 @@ const Game = () => {
         chunk.obstacles.forEach((obstacle : Obstacle) => {
           obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx);
         });
+
       });
 
       // draw pacman
@@ -78,31 +121,16 @@ const Game = () => {
         tileWidthPx * pacmanSize,
         tileHeightPx * pacmanSize,
       );
-    }, 50 /* ms, frame rate */);
+    }, 25 /*25 default*/ /* ms, frame rate */);
 
   }, []);
-
-  const handleKeyDown = (e : React.KeyboardEvent<HTMLCanvasElement>) => {
-    // console.log(e.key);
-
-    if (e.key === 'w') {
-      pressedKeys.arrowUp = true;
-    } else if (e.key === 's') {
-      pressedKeys.arrowDown = true;
-    } else if (e.key === 'a') {
-      pressedKeys.arrowLeft = true;
-    } else if (e.key === 'd') {
-      pressedKeys.arrowRight = true;
-    }
-  }
 
   return (
     <div className="flex">
       <canvas
         ref={canvasRef}
-        width={3 * mapChunkSize * tileWidthPx}
-        height={3 * mapChunkSize * tileHeightPx}
-        onKeyDown={(e)=>handleKeyDown(e)}
+        width={mapChunkSize * tileWidthPx}
+        height={mapChunkSize * tileHeightPx}
         tabIndex={0}
       />
     </div>

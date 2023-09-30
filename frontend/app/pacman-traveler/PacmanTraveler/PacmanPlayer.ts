@@ -14,18 +14,19 @@ export class PacmanPlayer implements Position {
 
   move(direction: Direction, speed: number, obstacles: Obstacle[]) {
 
-    const newPosition: Position = (() : Position => {
-      switch (direction) {
-        case Direction.Up:
-          return { x: this.x, y: this.y - speed };
-        case Direction.Down:
-          return { x: this.x, y: this.y + speed };
-        case Direction.Left:
-          return { x: this.x - speed, y: this.y };
-        case Direction.Right:
-          return { x: this.x + speed, y: this.y };
-      }
-    })();
+    // normalize direction vector
+    let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (magnitude !== 0) {
+      direction.x /= magnitude;
+      direction.y /= magnitude;
+    }
+
+    console.log(direction);
+
+    const newPosition: Position = {
+      x: this.x + direction.x * speed,
+      y: this.y + direction.y * speed,
+    };
 
     for (let obstacle of obstacles) {
       if (obstacle.isPacmanInside(newPosition.x, newPosition.y, this.size)) {
@@ -37,6 +38,6 @@ export class PacmanPlayer implements Position {
     this.y = newPosition.y;
   }
 
-  // drawn Pacman here canvasDraw();
+  // draw Pacman here canvasDraw();
   
 }
