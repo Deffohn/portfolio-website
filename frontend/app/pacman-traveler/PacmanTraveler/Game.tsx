@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gameMap, mapChunkSize, pacmanSize, pacmanSpeed } from "./assets/gameAssets";
-import { Chunk, Direction } from "./mapTypes";
+import { Chunk, Direction, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
 
@@ -9,6 +9,9 @@ const tileWidthPx = tileRatioPx;
 const tileHeightPx = tileRatioPx;
 
 const pacmanPlayerImageSrc = "pacman-traveler/resources/pacman.png";
+const pacmanDrawingPositionPx = (mapChunkSize / 2 - pacmanSize / 2) * tileRatioPx;
+const pacmanWidthPx = pacmanSize * tileWidthPx;
+const pacmanHeightPx = pacmanSize * tileHeightPx;
 
 // create absolute object storing pressed keys
 const pressedKeys = {
@@ -99,12 +102,17 @@ const Game = () => {
       if (direction.x !== 0 || direction.y !== 0) {
         pacman.move(direction, pacmanSpeed, obstacles);
       }
+
+      let deltaPacmanPx: Position = {
+        x: pacman.x * tileWidthPx - pacmanDrawingPositionPx - pacmanWidthPx / 2,
+        y: pacman.y * tileHeightPx - pacmanDrawingPositionPx - pacmanHeightPx / 2,
+      };
       
       // draw tiles
       gameMap.forEach((chunk : Chunk) => {
 
         chunk.obstacles.forEach((obstacle : Obstacle) => {
-          obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx);
+          obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
         });
 
       });
@@ -114,12 +122,12 @@ const Game = () => {
         pacmanPlayerImage,
 
         // position on canvas
-        (pacman.x - pacmanSize / 2) * tileRatioPx,
-        (pacman.y - pacmanSize / 2) * tileRatioPx,
+        pacmanDrawingPositionPx,
+        pacmanDrawingPositionPx,
 
         // px size on canvas
-        tileWidthPx * pacmanSize,
-        tileHeightPx * pacmanSize,
+        pacmanWidthPx,
+        pacmanHeightPx,
       );
     }, 25 /*25 default*/ /* ms, frame rate */);
 

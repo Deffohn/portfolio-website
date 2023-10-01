@@ -1,6 +1,10 @@
 export interface Obstacle {
   isPacmanInside(x: number, y: number, pacmanSize: number): boolean;
-  canvasDraw(ctx: CanvasRenderingContext2D, tileWidthPx: number, tileHeightPx: number): void;
+  canvasDraw(
+    ctx: CanvasRenderingContext2D,
+    tileWidthPx: number, tileHeightPx: number,
+    deltaPacmanXPx: number, deltaPacmanYPx: number,
+  ): void;
 }
 
 export class RectangleObstacle implements Obstacle {
@@ -25,11 +29,15 @@ export class RectangleObstacle implements Obstacle {
     );
   }
 
-  canvasDraw(ctx: CanvasRenderingContext2D, tileWidthPx: number, tileHeightPx: number) {
+  canvasDraw(
+    ctx: CanvasRenderingContext2D,
+    tileWidthPx: number, tileHeightPx: number,
+    deltaPacmanXPx: number, deltaPacmanYPx: number,
+  ) {
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(
-      this.x * tileWidthPx, this.y * tileHeightPx,
+      this.x * tileWidthPx - deltaPacmanXPx, this.y * tileHeightPx - deltaPacmanYPx,
       this.width * tileWidthPx, this.height * tileHeightPx,
     );
 
