@@ -1,12 +1,21 @@
 import { useEffect, useRef } from "react";
-import { gameMap, mapChunkSize, pacmanSize, pacmanSpeed } from "./assets/gameAssets";
-import { Chunk, Direction, Position } from "./mapTypes";
+import { generateObjectsAndObstaclesOnChunk, generateSampleChunk } from "./assets/gameAssets";
+import { Chunk, Direction, MapChunk, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
+import { GameMap } from "./GameMap";
 
 const tileRatioPx = 48;
 const tileWidthPx = tileRatioPx;
 const tileHeightPx = tileRatioPx;
+
+export const mapChunkSize: number = 12
+const mapWidthInChunks: number = 3
+const mapHeightInChunks: number = 3
+
+export const pacmanSize = 0.5; // ratio of tile size
+export const pacmanSpeed = 0.06; // ratio of tile size, do prefer 1/n where n is integer 
+export const pathBorderWidth = 0.1; // ratio of tile size
 
 const pacmanPlayerImageSrc = "pacman-traveler/resources/pacman.png";
 const pacmanDrawingPositionPx = (mapChunkSize / 2 - pacmanSize / 2) * tileRatioPx;
@@ -77,6 +86,9 @@ const Game = () => {
       pacmanSize,
     );
 
+    
+    const gameMap: GameMap = new GameMap(mapChunkSize, mapWidthInChunks, mapHeightInChunks, generateSampleChunk);
+
     const pacmanPlayerImage = new Image();
     pacmanPlayerImage.src = pacmanPlayerImageSrc;
 
@@ -85,7 +97,12 @@ const Game = () => {
       // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      let obstacles: Obstacle[] = gameMap.flatMap((chunk : Chunk) => chunk.obstacles);
+      gameMap.refreshChunks({
+        x: pacman.x,
+        y: pacman.y,
+      });
+
+      let obstacles: Obstacle[] = gameMap.mapChunks.map((chunk : MapChunk) => generateObjectsAndObstaclesOnChunk(chunk).obstacles).flat();
 
       // TODO handle multiple keys pressed at once
       let direction: Direction = new Direction(0, 0);
@@ -109,12 +126,8 @@ const Game = () => {
       };
       
       // draw tiles
-      gameMap.forEach((chunk : Chunk) => {
-
-        chunk.obstacles.forEach((obstacle : Obstacle) => {
-          obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
-        });
-
+      obstacles.forEach((obstacle : Obstacle) => {
+        obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
       });
 
       // draw pacman
@@ -146,3 +159,4 @@ const Game = () => {
 };
 
 export default Game;
+

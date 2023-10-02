@@ -21,8 +21,6 @@ export class PacmanPlayer implements Position {
       direction.y /= magnitude;
     }
 
-    console.log(direction);
-
     const newPosition: Position = {
       x: this.x + direction.x * speed,
       y: this.y + direction.y * speed,
