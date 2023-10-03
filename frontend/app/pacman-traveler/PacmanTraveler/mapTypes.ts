@@ -38,8 +38,8 @@ export interface Position {
 }
 
 export interface Path {
-  up: boolean,
-  left: boolean,
+  up: boolean | undefined,
+  left: boolean | undefined,
 }
 
 export interface MapTile extends Position {

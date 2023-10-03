@@ -5,14 +5,14 @@ export class GameMap {
   mapWidthInChunks: number;
   mapHeightInChunks: number;
 
-  chunkGenerator: (position: Position, /* proximities */) => MapChunk;
+  chunkGenerator: (position: Position, chunkSize: number, /* proximities */) => MapChunk;
   mapChunks: MapChunk[];
 
 
   constructor(
     chunkSizeInTiles: number,
     mapWidthInChunks: number, mapHeightInChunks: number,
-    chunkGenerator: (position: Position, /* proximities */) => MapChunk,
+    chunkGenerator: (position: Position, chunkSize: number, /* proximities */) => MapChunk,
   ) {
     /**
     * @param mapWidthInChunks - Only odd numbers at least 3 are supported
@@ -35,7 +35,15 @@ export class GameMap {
     this.chunkGenerator = chunkGenerator;
   }
 
+  findChunk(chunkPosition: Position): MapChunk | undefined {
+    return this.mapChunks.find(
+      chunk => chunk.position.x === chunkPosition.x && chunk.position.y === chunkPosition.y
+    );
+  }
+
   refreshChunks(pacmanPosition: Position): void {
+    let newMapChunks: MapChunk[] = [];
+
     let pacmanInChunkPosition = {
       x: Math.floor(pacmanPosition.x / this.chunkSizeInTiles) * this.chunkSizeInTiles,
       y: Math.floor(pacmanPosition.y / this.chunkSizeInTiles) * this.chunkSizeInTiles,
@@ -45,23 +53,22 @@ export class GameMap {
     let heightEuclidianQuotient = Math.floor(this.mapHeightInChunks / 2);
     for (let i = -widthEuclidianQuotient; i < widthEuclidianQuotient + 1; i++) {
       for (let j = -heightEuclidianQuotient; j < heightEuclidianQuotient + 1; j++) {
+
         let chunkPosition = {
           x: pacmanInChunkPosition.x + i * this.chunkSizeInTiles,
           y: pacmanInChunkPosition.y + j * this.chunkSizeInTiles,
         };
-        if (!this.checkChunkExists(chunkPosition)) {
-          this.mapChunks.push(this.chunkGenerator(chunkPosition, /* proximities */));
+
+        let chunk = this.findChunk(chunkPosition);
+        if (!chunk) {
+          newMapChunks.push(this.chunkGenerator(chunkPosition, this.chunkSizeInTiles));
+        } else {
+          newMapChunks.push(chunk);
         }
       }
     }
+
+    this.mapChunks = newMapChunks;
   }
-
-  checkChunkExists(chunkPosition: Position): boolean {
-    return this.mapChunks.some(
-      chunk => chunk.position.x === chunkPosition.x && chunk.position.y === chunkPosition.y
-    );
-  }
-
-
 
 }

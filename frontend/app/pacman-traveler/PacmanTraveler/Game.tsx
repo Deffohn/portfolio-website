@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import { generateObjectsAndObstaclesOnChunk, generateSampleChunk } from "./assets/gameAssets";
+import { generateObjectsAndObstaclesOnChunk } from "./assets/gameAssets";
 import { Chunk, Direction, MapChunk, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
 import { GameMap } from "./GameMap";
+import { basicChunkGenerator } from "./generatorAssets/chunkGenerators/basicChunkGenerator";
 
 const tileRatioPx = 48;
 const tileWidthPx = tileRatioPx;
@@ -82,12 +83,12 @@ const Game = () => {
     if (!ctx) return;
 
     const pacman = new PacmanPlayer(
-      (mapChunkSize + 1) / 2, (mapChunkSize + 1) / 2,
+      (mapChunkSize /*+ 1*/) / 2, (mapChunkSize /*+ 1*/) / 2,
       pacmanSize,
     );
 
     
-    const gameMap: GameMap = new GameMap(mapChunkSize, mapWidthInChunks, mapHeightInChunks, generateSampleChunk);
+    const gameMap: GameMap = new GameMap(mapChunkSize, mapWidthInChunks, mapHeightInChunks, basicChunkGenerator);
 
     const pacmanPlayerImage = new Image();
     pacmanPlayerImage.src = pacmanPlayerImageSrc;
