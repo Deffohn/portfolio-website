@@ -14,7 +14,7 @@ const ProjectPicture: React.FC<{src: string, alt: string}> = (
 ) => {
   return (
     <div>
-      <img src={src} alt={alt} className="md:h-30 md:w-auto md:mb-10 md:mt-10 lg:w-72 lg:h-72"/>
+      <img src={src} alt={alt} className="md:h-30 md:w-auto md:mb-10 md:mt-10 lg:w-40 lg:h-40"/>
     </div>
   );
 };
