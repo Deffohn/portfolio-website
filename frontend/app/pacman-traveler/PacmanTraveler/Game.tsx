@@ -7,7 +7,7 @@ import { Obstacle } from "./Obstacle";
 import { GameMap } from "./GameMap";
 import { basicChunkGenerator } from "./generatorAssets/chunkGenerators/basicChunkGenerator";
 
-const tileRatioPx = 48;
+const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;
 const tileHeightPx = tileRatioPx;
 

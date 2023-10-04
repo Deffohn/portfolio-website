@@ -1,3 +1,4 @@
+import { getBaseUrl } from '@/utils/baseUrl';
 import styles from './Projects.module.css';
 import Image from 'next/image';
 
@@ -108,27 +109,45 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
   );
 };
 
-const projects: ProjectContentInput[] = [
-  {
-    illustrationPath: "/projects/portfolio.png",
-    projectName: "This same Portfolio you are currently looking at",
-    projectDescription: "This portfolio project serves as a means to consolidate various aspects of my endeavors, while also acting as a practical showcase of my software development skills.",
-    projectTags: [
-      "NextJS",
-      "React",
-      "Typescript",
-      "CICD",
-      "Github Actions",
-      "Frontend"
-    ],
-    projectLinks: [
-      "https://github.com/Deffohn/portfolio-website"
-    ]
-  }
-
-]
-
 const Projects: React.FC = () => {
+
+  const projects: ProjectContentInput[] = [
+    {
+      illustrationPath: "/projects/portfolio.png",
+      projectName: "This same Portfolio you are currently looking at",
+      projectDescription: "This portfolio project serves as a means to consolidate various aspects of my endeavors, while also acting as a practical showcase of my software development skills.",
+      projectTags: [
+        "NextJS",
+        "React",
+        "Typescript",
+        "CICD",
+        "Github Actions",
+        "Frontend",
+      ],
+      projectLinks: [
+        "https://github.com/Deffohn/portfolio-website",
+      ],
+    },
+    {
+      illustrationPath: "/projects/pacman-traveler.png",
+      projectName: "Pacman Traveler",
+      projectDescription: "Pacman Traveler is a HTML Canvas - Typescript game experiment for displaying terrain generation algorithms, showing of my own algorithm go generate random and smart pacman levels based on a decaying tree generation for tiles borders.",
+      projectTags: [
+        "Mathematics",
+        "Algorithm",
+        "Level Generation",
+        "NextJS",
+        "React",
+        "Typescript",
+        "Canvas",
+      ],
+      projectLinks: [
+        getBaseUrl()+"pacman-traveler",
+        "https://github.com/Deffohn/portfolio-website",
+      ],
+    },
+  ]
+  
   return (
     <div>
       <h2>Projects</h2>
