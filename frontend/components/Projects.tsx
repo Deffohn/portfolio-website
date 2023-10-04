@@ -54,7 +54,7 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         </div>
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
           <div className="flex mx-1.5 my-2.5 items-center justify-center
-                            md:max-w-lg">
+                            md:max-w-md">
             { 
               contentInput.projectDescription &&
               <a className="text-left text-white no-underline">
@@ -141,7 +141,7 @@ const Projects: React.FC = () => {
     {
       illustrationPath: "/projects/pacman-traveler.png",
       projectName: "Pacman Traveler",
-      projectDescription: "Pacman Traveler is a HTML Canvas - Typescript game experiment for displaying terrain generation algorithms, showing of my own algorithm go generate random and smart pacman levels based on a decaying tree generation for tiles borders.",
+      projectDescription: "Pacman Traveler is a HTML Canvas - Typescript game experiment for displaying terrain generation algorithms, demonstration of my own algorithm to generate random and smart pacman levels based on a decaying tree generation for tiles borders.",
       projectTags: [
         "Mathematics",
         "Algorithm",
