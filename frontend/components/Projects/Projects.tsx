@@ -143,7 +143,7 @@ const Projects: React.FC = () => {
       ],
       projectLinks: [
         getBaseUrl()+"pacman-traveler",
-        "https://github.com/Deffohn/portfolio-website",
+        "https://github.com/Deffohn/portfolio-website/blob/main/frontend/app/pacman-traveler",
       ],
     },
   ]
