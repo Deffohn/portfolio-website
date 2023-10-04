@@ -1,9 +1,9 @@
 const Studies: React.FC = () => {
   return (
     <section>
-      <h2>Studies</h2>
+      <h2 className="text-3xl font-bold ml-2">Studies</h2>
       {/* Your studies content goes here */}
-    WIP
+    WIP Section
     </section>
   );
 };
