@@ -1,4 +1,5 @@
-import styles from './Projects.module.css';
+"use client";
+import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 
 type ProjectContentInput = {
@@ -53,7 +54,7 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         </div>
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
           <div className="flex mx-1.5 my-2.5 items-center justify-center
-                            md:max-w-xs">
+                            md:max-w-lg">
             { 
               contentInput.projectDescription &&
               <a className="text-left text-white no-underline">
@@ -136,6 +137,24 @@ const Projects: React.FC = () => {
       projectLinks: [
         "https://github.com/Deffohn/portfolio-website"
       ]
+    },
+    {
+      illustrationPath: "/projects/pacman-traveler.png",
+      projectName: "Pacman Traveler",
+      projectDescription: "Pacman Traveler is a HTML Canvas - Typescript game experiment for displaying terrain generation algorithms, showing of my own algorithm go generate random and smart pacman levels based on a decaying tree generation for tiles borders.",
+      projectTags: [
+        "Mathematics",
+        "Algorithm",
+        "Level Generation",
+        "NextJS",
+        "React",
+        "Typescript",
+        "Canvas",
+      ],
+      projectLinks: [
+        getBaseUrl()+"pacman-traveler",
+        "https://github.com/Deffohn/portfolio-website/blob/main/frontend/app/pacman-traveler",
+      ],
     },
   ];
 
