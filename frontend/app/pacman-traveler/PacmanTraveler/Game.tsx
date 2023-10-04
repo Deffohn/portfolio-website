@@ -1,6 +1,7 @@
+"use client";
 import { useEffect, useRef } from "react";
 import { generateObjectsAndObstaclesOnChunk } from "./assets/gameAssets";
-import { Chunk, Direction, MapChunk, Position } from "./mapTypes";
+import { Direction, MapChunk, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
 import { GameMap } from "./GameMap";
@@ -148,8 +149,8 @@ const Game = () => {
   }, []);
 
   return (
-    <div className="flex">
-      <canvas
+    <div className="flex items-center m-1 bg-black">
+      <canvas className="outline-none"
         ref={canvasRef}
         width={mapChunkSize * tileWidthPx}
         height={mapChunkSize * tileHeightPx}

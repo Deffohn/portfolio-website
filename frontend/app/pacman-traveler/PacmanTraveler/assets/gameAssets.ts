@@ -14,7 +14,6 @@ export const findMapTileByPosition = (position: Position, mapTiles: MapTile[]): 
   return tile;
 }
 
-
 export const generateEmptyChunk = (position: Position): MapChunk => {
   const tiles: MapTile[] = [];
   for (let i = 0; i < mapChunkSize; i++) {
@@ -34,44 +33,6 @@ export const generateEmptyChunk = (position: Position): MapChunk => {
     tiles,
     position
   };
-};
-
-export const generateSampleChunk = (position: Position): MapChunk => {
-  const tiles: MapTile[] = [];
-  for (let i = 0; i < mapChunkSize; i++) {
-    for (let j = 0; j < mapChunkSize; j++) {
-      tiles.push({
-        x: position.x + i,
-        y: position.y + j,
-        path: {
-          up: true,
-          left: Math.random() > 0.5,
-        },
-        mana: null,
-      });
-    }
-  }
-  return {
-    tiles,
-    position
-  };
-};
-
-const generateThreeByThreeChunks = ( 
-  chunkGenerator: (position: Position) => MapChunk
-
-) => {
-  const map: MapChunk[] = [];
-  for (let i = -1; i < 2; i++) {
-    for (let j = -1; j < 2; j++) {
-      let x = i * mapChunkSize;
-      let y = j * mapChunkSize;
-      map.push(
-        chunkGenerator({ x, y })
-      );
-    }
-  }
-  return map;
 };
 
 export const generateObjectsAndObstaclesOnChunk = (chunk: MapChunk): Chunk => {

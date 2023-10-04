@@ -12,7 +12,7 @@ const Home: React.FC = () => {
     <div className={styles.home}>
       
       <Head>
-        <title>Maxime Parmentier Portfolio</title>
+        <title>Portfolio - Maxime Parmentier</title>
       </Head>
 
       <Navbar />
