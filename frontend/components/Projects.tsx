@@ -41,7 +41,11 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
         </div>
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
           <div className="flex mx-1.5 my-2.5 items-center justify-center">
-            <h3 className='text-center text-white no-underline break-words'>{contentInput.projectName}</h3>
+            <h3 className='text-center text-white no-underline break-words
+                          text-xl'
+            >
+              {contentInput.projectName}
+            </h3>
           </div>
         </div>
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
