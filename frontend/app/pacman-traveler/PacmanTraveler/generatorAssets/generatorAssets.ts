@@ -8,8 +8,6 @@ export const findMapTileWithUndefinedPath = (
     tile => tile.path.up === undefined || tile.path.left === undefined
   );
 
-  console.log("length of tilesWithUndefinedPath: ", tilesWithUndefinedPath.length);
-
   // pick random tile in tilesWithUndefinedPath
   let tile: MapTile | null = (() => tilesWithUndefinedPath.length !== 0 ? tilesWithUndefinedPath[
     Math.floor(Math.random() * tilesWithUndefinedPath.length)

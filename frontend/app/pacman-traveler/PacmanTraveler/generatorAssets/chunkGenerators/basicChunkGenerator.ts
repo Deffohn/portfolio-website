@@ -69,6 +69,12 @@ export const basicChunkGenerator = (
       Math.random() > 0.5 ? cursorDirection = 'up' : cursorDirection = 'down'
     } else if (cursorTile.path.up === undefined) {
       Math.random() > 0.5 ? cursorDirection = 'left' : cursorDirection = 'right'
+    } else {
+      // failsafe
+      return {
+        tiles: tiles,
+        position,
+      };
     }
 
     tiles = tileBordersClusterGenerator(
@@ -79,7 +85,6 @@ export const basicChunkGenerator = (
       },
       // deepCopyMapTiles(tiles),
       tiles,
-      0.45, // TEMP until fixing loops in cluster generation, which should be a tree instead
     );
 
     cursorTile = findMapTileWithUndefinedPath(tiles);
@@ -96,7 +101,7 @@ export const basicChunkGenerator = (
 const tileBordersClusterGenerator = (
   cursor: Proximity,
   tiles: MapTile[],
-  ratioStrengthTileBordersClusters: number = 0.8,
+  ratioStrengthTileBordersClusters: number = 0.5,
 ): MapTile[] => {
 
   let cursorTile: MapTile = tiles.find(tile => tile.x === cursor.x && tile.y === cursor.y)!;
@@ -146,6 +151,7 @@ const tileBordersClusterGenerator = (
   // gather available proximities at cursor into local variable for recursive progression
   let proximityUndefinedRelatedDirectionPathTiles: MapTile[] = [];
 
+  checkCursorDirectionPath = false;
   for (let i = 0; i < proximitiesAtCursor.length; i++) {
     let proximityTile: MapTile | undefined = tiles.find(tile => tile.x === cursor.x + proximitiesAtCursor[i].x && tile.y === cursor.y + proximitiesAtCursor[i].y);
 
@@ -155,19 +161,19 @@ const tileBordersClusterGenerator = (
 
     switch (proximitiesAtCursor[i].direction) {
       case 'up':
-        checkCursorDirectionPath = proximityTile.path.left === false;
+        checkCursorDirectionPath = (proximityTile.path.left === false) || checkCursorDirectionPath;
         if (proximityTile.path.left === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'left':
-        checkCursorDirectionPath = proximityTile.path.up === false;
+        checkCursorDirectionPath = (proximityTile.path.up === false) || checkCursorDirectionPath;
         if (proximityTile.path.up === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'down':
-        checkCursorDirectionPath = proximityTile.path.left === false;
+        checkCursorDirectionPath = (proximityTile.path.left === false) || checkCursorDirectionPath;
         if (proximityTile.path.left === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'right':
-        checkCursorDirectionPath = proximityTile.path.up === false;
+        checkCursorDirectionPath = (proximityTile.path.up === false) || checkCursorDirectionPath;
         if (proximityTile.path.up === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
     }
