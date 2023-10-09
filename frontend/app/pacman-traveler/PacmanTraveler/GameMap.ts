@@ -1,22 +1,28 @@
-import { MapChunk, Position } from "./mapTypes";
+import { MapChunk, MapTile, Position } from "./mapTypes";
+import {chunkTileProximityRectangles} from "./generatorAssets/generatorAssets";
 
 export class GameMap {
   chunkSizeInTiles: number;
   mapWidthInChunks: number;
   mapHeightInChunks: number;
 
-  chunkGenerator: (position: Position, chunkSize: number, /* proximities */) => MapChunk;
+  chunkGenerator: (position: Position, chunkSize: number, proximityTiles: MapTile[]) => MapChunk;
+  chunkTileProximityRectangles: {
+    relativeChunkPosition: Position,
+    upLeftPosition: Position,
+    downRightPosition: Position,
+  }[];
   mapChunks: MapChunk[];
 
 
   constructor(
     chunkSizeInTiles: number,
     mapWidthInChunks: number, mapHeightInChunks: number,
-    chunkGenerator: (position: Position, chunkSize: number, /* proximities */) => MapChunk,
+    chunkGenerator: (position: Position, chunkSize: number, proximityTiles: MapTile[]) => MapChunk,
   ) {
     /**
-    * @param mapWidthInChunks - Only odd numbers at least 3 are supported
-    * @param mapHeightInChunks - Only odd numbers at least 3 are supported
+    * @param mapWidthInChunks - Only odd numbers being at least 3 are supported
+    * @param mapHeightInChunks - Only odd numbers being at least 3 are supported
     */
     this.chunkSizeInTiles = chunkSizeInTiles;
 
@@ -33,6 +39,8 @@ export class GameMap {
     this.mapChunks = [];
 
     this.chunkGenerator = chunkGenerator;
+
+    this.chunkTileProximityRectangles = chunkTileProximityRectangles(chunkSizeInTiles);
   }
 
   findChunk(chunkPosition: Position): MapChunk | undefined {
@@ -41,14 +49,38 @@ export class GameMap {
     );
   }
 
+  findProximityTilesToChunk(chunkPosition: Position): MapTile[] {
+    let tiles: MapTile[] = [];
+
+    this.chunkTileProximityRectangles.forEach((proximityRectangle) => {
+      let chunk = this.findChunk({
+        x: chunkPosition.x + proximityRectangle.relativeChunkPosition.x,
+        y: chunkPosition.y + proximityRectangle.relativeChunkPosition.y, 
+      });
+
+      if (!chunk) return;
+
+      tiles.push(...chunk.tiles.filter(tile => (
+        tile.x >= proximityRectangle.upLeftPosition.x + chunkPosition.x + proximityRectangle.relativeChunkPosition.x &&
+        tile.x < proximityRectangle.downRightPosition.x + chunkPosition.x + proximityRectangle.relativeChunkPosition.x &&
+        tile.y >= proximityRectangle.upLeftPosition.y + chunkPosition.y + proximityRectangle.relativeChunkPosition.y &&
+        tile.y < proximityRectangle.downRightPosition.y + chunkPosition.y + proximityRectangle.relativeChunkPosition.y
+      )));
+    });
+
+    return tiles;
+  }
+
   refreshChunks(pacmanPosition: Position): void {
-    let newMapChunks: MapChunk[] = [];
+    let newMapChunkPositionsToGenerate: Position[] = [];
 
     let pacmanInChunkPosition = {
       x: Math.floor(pacmanPosition.x / this.chunkSizeInTiles) * this.chunkSizeInTiles,
       y: Math.floor(pacmanPosition.y / this.chunkSizeInTiles) * this.chunkSizeInTiles,
     };
 
+    // gather chunks not generated, refresh and drop old chunks no longer in pacman's range
+    let newMapChunks: MapChunk[] = [];
     let widthEuclidianQuotient = Math.floor(this.mapWidthInChunks / 2);
     let heightEuclidianQuotient = Math.floor(this.mapHeightInChunks / 2);
     for (let i = -widthEuclidianQuotient; i < widthEuclidianQuotient + 1; i++) {
@@ -61,14 +93,22 @@ export class GameMap {
 
         let chunk = this.findChunk(chunkPosition);
         if (!chunk) {
-          newMapChunks.push(this.chunkGenerator(chunkPosition, this.chunkSizeInTiles));
+          newMapChunkPositionsToGenerate.push(chunkPosition);
         } else {
           newMapChunks.push(chunk);
         }
       }
     }
-
     this.mapChunks = newMapChunks;
+
+    // then generate them
+    newMapChunkPositionsToGenerate.forEach(chunkPosition => {
+      this.mapChunks.push(this.chunkGenerator(
+        chunkPosition,
+        this.chunkSizeInTiles,
+        this.findProximityTilesToChunk(chunkPosition),
+      ));
+    });
   }
 
 }

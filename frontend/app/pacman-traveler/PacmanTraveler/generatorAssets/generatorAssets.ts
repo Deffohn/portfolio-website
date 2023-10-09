@@ -1,4 +1,4 @@
-import { MapTile } from "../mapTypes";
+import { MapTile, Position } from "../mapTypes";
 
 export const findMapTileWithUndefinedPath = (
   mapTiles: MapTile[],
@@ -94,3 +94,124 @@ export const proximitiesToDirection: {
     },
   ],
 }
+
+export const chunkTileProximityRectangles = ((chunkSizeInTiles: number): {
+  relativeChunkPosition: Position,
+  upLeftPosition: Position,
+  downRightPosition: Position,
+}[] => {
+  return ([
+    {
+      relativeChunkPosition: {
+        x: chunkSizeInTiles,
+        y: 0,
+      },
+      upLeftPosition: {
+        x: 0,
+        y: 0,
+      },
+      downRightPosition: {
+        x: 1,
+        y: chunkSizeInTiles,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: chunkSizeInTiles,
+        y: chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: 0,
+        y: 0,
+      },
+      downRightPosition: {
+        x: 1,
+        y: 1,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: 0,
+        y: chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: 0,
+        y: 0,
+      },
+      downRightPosition: {
+        x: chunkSizeInTiles,
+        y: 1,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: -chunkSizeInTiles,
+        y: chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: chunkSizeInTiles - 1,
+        y: 0,
+      },
+      downRightPosition: {
+        x: chunkSizeInTiles,
+        y: 1,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: -chunkSizeInTiles,
+        y: 0,
+      },
+      upLeftPosition: {
+        x: chunkSizeInTiles - 1,
+        y: 0,
+      },
+      downRightPosition: {
+        x: chunkSizeInTiles,
+        y: chunkSizeInTiles,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: -chunkSizeInTiles,
+        y: -chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: chunkSizeInTiles - 1,
+        y: chunkSizeInTiles - 1,
+      },
+      downRightPosition: {
+        x: chunkSizeInTiles,
+        y: chunkSizeInTiles,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: 0,
+        y: -chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: 0,
+        y: chunkSizeInTiles - 1,
+      },
+      downRightPosition: {
+        x: chunkSizeInTiles,
+        y: chunkSizeInTiles,
+      },
+    },
+    {
+      relativeChunkPosition: {
+        x: chunkSizeInTiles,
+        y: -chunkSizeInTiles,
+      },
+      upLeftPosition: {
+        x: 0,
+        y: chunkSizeInTiles - 1,
+      },
+      downRightPosition: {
+        x: 1,
+        y: chunkSizeInTiles,
+      },
+    },
+  ]);
+});
