@@ -6,7 +6,7 @@ import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection } from 
 export const basicChunkGenerator = (
   position: Position,
   chunkSize: number,
-  /* proximities */
+  proximityTiles: MapTile[],
 ): MapChunk => {
 
   let tiles: MapTile[] = [];
@@ -70,7 +70,7 @@ export const basicChunkGenerator = (
     } else if (cursorTile.path.up === undefined) {
       Math.random() > 0.5 ? cursorDirection = 'left' : cursorDirection = 'right'
     } else {
-      // failsafe
+      // failsafe, never reached
       return {
         tiles: tiles,
         position,
@@ -83,8 +83,8 @@ export const basicChunkGenerator = (
         y: cursorTile.y,
         direction: cursorDirection,
       },
-      // deepCopyMapTiles(tiles),
       tiles,
+      proximityTiles,
     );
 
     cursorTile = findMapTileWithUndefinedPath(tiles);
@@ -101,7 +101,8 @@ export const basicChunkGenerator = (
 const tileBordersClusterGenerator = (
   cursor: Proximity,
   tiles: MapTile[],
-  ratioStrengthTileBordersClusters: number = 0.5,
+  proximityTilesToChunk: MapTile[],
+  ratioStrengthTileBordersClusters: number = 0.60,
 ): MapTile[] => {
 
   let cursorTile: MapTile = tiles.find(tile => tile.x === cursor.x && tile.y === cursor.y)!;
@@ -129,7 +130,8 @@ const tileBordersClusterGenerator = (
   }
 
   // =====================================================================================================
-  // cancel recursive function and set cursor direction path to true if a proximity direction path at cursor is false
+  // cancel recursive function and set cursor direction path to true if a proximity
+  // (inside or outside the current chunk) direction path at cursor is false
 
   // gather proximities at cursor into local variable
   let proximitiesAtCursor: Proximity[];
@@ -155,26 +157,31 @@ const tileBordersClusterGenerator = (
   for (let i = 0; i < proximitiesAtCursor.length; i++) {
     let proximityTile: MapTile | undefined = tiles.find(tile => tile.x === cursor.x + proximitiesAtCursor[i].x && tile.y === cursor.y + proximitiesAtCursor[i].y);
 
+    let isTileInChunk: boolean = true;
     if (proximityTile === undefined) {
-      continue;
+      proximityTile = proximityTilesToChunk.find(tile => tile.x === cursor.x + proximitiesAtCursor[i].x && tile.y === cursor.y + proximitiesAtCursor[i].y);
+      if (proximityTile === undefined) {
+        continue;
+      }
+      isTileInChunk = false;
     }
 
     switch (proximitiesAtCursor[i].direction) {
       case 'up':
         checkCursorDirectionPath = (proximityTile.path.left === false) || checkCursorDirectionPath;
-        if (proximityTile.path.left === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
+        if (proximityTile.path.left === undefined && isTileInChunk) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'left':
         checkCursorDirectionPath = (proximityTile.path.up === false) || checkCursorDirectionPath;
-        if (proximityTile.path.up === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
+        if (proximityTile.path.up === undefined && isTileInChunk) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'down':
         checkCursorDirectionPath = (proximityTile.path.left === false) || checkCursorDirectionPath;
-        if (proximityTile.path.left === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
+        if (proximityTile.path.left === undefined && isTileInChunk) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
       case 'right':
         checkCursorDirectionPath = (proximityTile.path.up === false) || checkCursorDirectionPath;
-        if (proximityTile.path.up === undefined) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
+        if (proximityTile.path.up === undefined && isTileInChunk) proximityUndefinedRelatedDirectionPathTiles.push(proximityTile);
         break;
     }
   }
@@ -246,8 +253,8 @@ const tileBordersClusterGenerator = (
 
     tiles = tileBordersClusterGenerator(
       newCursor,
-      // deepCopyMapTiles(tiles),
       tiles,
+      proximityTilesToChunk,
       ratioStrengthTileBordersClusters,
     );
     
