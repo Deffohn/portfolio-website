@@ -148,11 +148,11 @@ const Projects: React.FC = () => {
       ],
       projectLinks: [
         {
-          link: "https://maxime-parmentier.com",
+          link: getBaseUrl(),
           linkName: "Project Website",
         },
         {
-          link: getBaseUrl(),
+          link: "https://github.com/Deffohn/portfolio-website",
           linkName: "Github Repository",
           illustrationPath: "github.png"
         },
@@ -177,7 +177,7 @@ const Projects: React.FC = () => {
           linkName: "Pacman Traveler Website",
         },
         {
-          link: "https://github.com/Deffohn/portfolio-website",
+          link: "https://github.com/Deffohn/portfolio-website/tree/main/frontend/app/pacman-traveler",
           linkName: "Github Repository path",
           illustrationPath: "github.png"
         },
