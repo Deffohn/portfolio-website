@@ -2,13 +2,19 @@
 import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 
+type ProjectLink = {
+  link: string,
+  linkName: string,
+  illustrationPath?: string,
+};
+
 type ProjectContentInput = {
   illustrationPath?: string,
   projectName: string,
   projectDescription?: string,
   projectTags?: string[],
-  projectLinks?: string[]
-}
+  projectLinks?: ProjectLink[],
+};
 
 const ProjectPicture: React.FC<{src: string, alt: string}> = (
   {src, alt}
@@ -74,15 +80,21 @@ const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
           <div className="flex flex-col mx-2.5 my-2.5 justify-between">
             <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
               {
-                contentInput.projectLinks.map((link: string, projectLinkIndex) => {
+                contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
+
+                  let src: string = "projects/linkIllustrations/High-contrast-emblem-symbolic-link.png";
+                  if (link.illustrationPath != null) {
+                    src = "projects/linkIllustrations/"+link.illustrationPath;
+                  }
+
                   return (
-                    <a key={projectLinkIndex} href={link}
+                    <a key={projectLinkIndex} href={link.link}
                       className="mx-auto block"
-                      title={link}
+                      title={link.linkName}
                     >
                       <Image
-                        src={"High-contrast-emblem-symbolic-link.png"}
-                        alt={link}
+                        src={src}
+                        alt={link.linkName}
                         width={25}
                         height={25}
                       />  
@@ -135,7 +147,15 @@ const Projects: React.FC = () => {
         "Frontend"
       ],
       projectLinks: [
-        "https://github.com/Deffohn/portfolio-website"
+        {
+          link: "https://maxime-parmentier.com",
+          linkName: "Project Website",
+        },
+        {
+          link: getBaseUrl(),
+          linkName: "Github Repository",
+          illustrationPath: "github.png"
+        },
       ]
     },
     {
@@ -152,8 +172,15 @@ const Projects: React.FC = () => {
         "Canvas",
       ],
       projectLinks: [
-        getBaseUrl()+"pacman-traveler",
-        "https://github.com/Deffohn/portfolio-website/blob/main/frontend/app/pacman-traveler",
+        {
+          link: getBaseUrl()+"pacman-traveler",
+          linkName: "Pacman Traveler Website",
+        },
+        {
+          link: "https://github.com/Deffohn/portfolio-website",
+          linkName: "Github Repository path",
+          illustrationPath: "github.png"
+        },
       ],
     },
   ];
