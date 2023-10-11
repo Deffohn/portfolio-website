@@ -16,7 +16,7 @@ export class PacmanPlayer implements Position {
 
     // normalize direction vector
     let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
-if (magnitude !== 0) {
+    if (magnitude !== 0) {
       direction.x /= magnitude;
       direction.y /= magnitude;
     }
