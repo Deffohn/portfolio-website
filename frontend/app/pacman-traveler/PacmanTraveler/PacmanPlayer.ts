@@ -16,7 +16,7 @@ export class PacmanPlayer implements Position {
 
     // normalize direction vector
     let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
-    if (magnitude !== 0) {
+if (magnitude !== 0) {
       direction.x /= magnitude;
       direction.y /= magnitude;
     }
@@ -26,14 +26,18 @@ export class PacmanPlayer implements Position {
       y: this.y + direction.y * speed,
     };
 
+    let xDoMove = true;
+    let yDoMove = true;
     for (let obstacle of obstacles) {
-      if (obstacle.isPacmanInside(newPosition.x, newPosition.y, this.size)) {
-        return;
+      if (obstacle.isPacmanInside(newPosition.x, this.y, this.size)) {
+        xDoMove = false;
+      } else if (obstacle.isPacmanInside(this.x, newPosition.y, this.size)) {
+        yDoMove = false;
       }
     }
 
-    this.x = newPosition.x;
-    this.y = newPosition.y;
+    if (xDoMove) this.x = newPosition.x;
+    if (yDoMove) this.y = newPosition.y;
   }
 
   // draw Pacman here canvasDraw();
