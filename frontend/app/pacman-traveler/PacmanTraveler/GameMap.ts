@@ -72,7 +72,6 @@ export class GameMap {
   }
 
   refreshChunks(pacmanPosition: Position): void {
-    let newMapChunkPositionsToGenerate: Position[] = [];
 
     let pacmanInChunkPosition = {
       x: Math.floor(pacmanPosition.x / this.chunkSizeInTiles) * this.chunkSizeInTiles,
@@ -81,6 +80,8 @@ export class GameMap {
 
     // gather chunks not generated, refresh and drop old chunks no longer in pacman's range
     let newMapChunks: MapChunk[] = [];
+    let newMapChunkPositionsToGenerate: Position[] = [];
+
     let widthEuclidianQuotient = Math.floor(this.mapWidthInChunks / 2);
     let heightEuclidianQuotient = Math.floor(this.mapHeightInChunks / 2);
     for (let i = -widthEuclidianQuotient; i < widthEuclidianQuotient + 1; i++) {
@@ -100,6 +101,15 @@ export class GameMap {
       }
     }
     this.mapChunks = newMapChunks;
+
+    // shuffle the order of remaining chunk to generate
+    newMapChunkPositionsToGenerate = ((positionToShuffle: Position[]): Position[] => {
+      for (let i = positionToShuffle.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [positionToShuffle[i], positionToShuffle[j]] = [positionToShuffle[j], positionToShuffle[i]];
+      }
+      return positionToShuffle;
+    })(newMapChunkPositionsToGenerate);
 
     // then generate them
     newMapChunkPositionsToGenerate.forEach(chunkPosition => {
