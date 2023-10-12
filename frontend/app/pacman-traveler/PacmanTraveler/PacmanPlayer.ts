@@ -33,9 +33,6 @@ export class PacmanPlayer implements Position {
         xDoMove = false;
       } if (obstacle.isPacmanInside(this.x, newPosition.y, this.size)) {
         yDoMove = false;
-      } if (obstacle.isPacmanInside(newPosition.x, newPosition.y, this.size)) {
-        xDoMove = false;
-        yDoMove = false;
       }
     }
 
