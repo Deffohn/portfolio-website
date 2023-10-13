@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { generateObjectsAndObstaclesOnChunk } from "./assets/gameAssets";
+import { generateObstaclesOnChunk } from "./assets/gameAssets";
 import { Direction, MapChunk, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
@@ -106,7 +106,7 @@ const Game = () => {
         y: pacman.y,
       });
 
-      let obstacles: Obstacle[] = gameMap.mapChunks.map((chunk : MapChunk) => generateObjectsAndObstaclesOnChunk(chunk).obstacles).flat();
+      let obstacles: Obstacle[] = gameMap.mapChunks.map((chunk : MapChunk) => generateObstaclesOnChunk(chunk)).flat();
 
       // TODO handle multiple keys pressed at once
       let direction: Direction = new Direction(0, 0);

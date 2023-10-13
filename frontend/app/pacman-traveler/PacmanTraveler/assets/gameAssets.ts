@@ -14,28 +14,7 @@ export const findMapTileByPosition = (position: Position, mapTiles: MapTile[]): 
   return tile;
 }
 
-export const generateEmptyChunk = (position: Position): MapChunk => {
-  const tiles: MapTile[] = [];
-  for (let i = 0; i < mapChunkSize; i++) {
-    for (let j = 0; j < mapChunkSize; j++) {
-      tiles.push({
-        x: position.x + i,
-        y: position.y + j,
-        path: {
-          up: true,
-          left: true,
-        },
-        mana: null,
-      });
-    }
-  }
-  return {
-    tiles,
-    position
-  };
-};
-
-export const generateObjectsAndObstaclesOnChunk = (chunk: MapChunk): Chunk => {
+export const generateObstaclesOnChunk = (chunk: MapChunk): Obstacle[] => {
   const obstacles: Obstacle[] = [];
 
   // generate tile obstacles "borders"
@@ -52,8 +31,5 @@ export const generateObjectsAndObstaclesOnChunk = (chunk: MapChunk): Chunk => {
     }
   });
 
-  return {
-    obstacles,
-    position: chunk.position,
-  };
+  return obstacles;
 };
