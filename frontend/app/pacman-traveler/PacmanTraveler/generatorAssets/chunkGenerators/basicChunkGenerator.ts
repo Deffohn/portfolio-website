@@ -1,7 +1,8 @@
+import { CogScore } from "../../CogScore";
 import { findMapTileByPosition } from "../../assets/gameAssets";
 import { centerMapPattern } from "../../assets/mapPatterns";
 import { MapChunk, MapTile, Position } from "../../mapTypes";
-import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection } from "../generatorAssets";
+import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection, cogTypes } from "../generatorAssets";
 
 export const basicChunkGenerator = (
   position: Position,
@@ -11,6 +12,7 @@ export const basicChunkGenerator = (
 
   let tiles: MapTile[] = [];
 
+  // generate tiles with undefined paths
   for (let i = 0; i < chunkSize; i++) {
     for (let j = 0; j < chunkSize; j++) {
       tiles.push({
@@ -51,6 +53,32 @@ export const basicChunkGenerator = (
     }));
   }
 
+  // generate cogScores
+  let cogScores: CogScore[] = [];
+  let cogScoreProbability: number = 4 / (chunkSize * chunkSize);
+  tiles.forEach((tile) => {
+    // first skip tiles in the middle of the map
+    if (
+      tile.x < chunkSize / 2 + 2 
+      && tile.x >= chunkSize / 2 - 2 
+      && tile.y < chunkSize / 2 + 2 
+      && tile.y >= chunkSize / 2 - 2 
+    ) return;
+
+    if (Math.random() < cogScoreProbability) {
+      let cogScoreChoose = cogTypes[Math.floor(Math.random() * cogTypes.length)];
+      cogScores.push(new CogScore(
+        tile.x, tile.y,
+        cogScoreChoose.imagePath,
+        cogScoreChoose.score,
+        cogScoreChoose.totalFrames,
+        cogScoreChoose.pxPeriod,
+        cogScoreChoose.ySize,
+        Math.floor(Math.random() * cogScoreChoose.totalFrames),
+      ));
+    }
+  });
+
   // =====================================================================================================
   // now generating tile borders clusters
 
@@ -73,7 +101,9 @@ export const basicChunkGenerator = (
       // failsafe, never reached
       return {
         tiles: tiles,
-        position,
+        position: position,
+        cogScores: cogScores,
+
       };
     }
 
@@ -93,7 +123,8 @@ export const basicChunkGenerator = (
   // =====================================================================================================
   return {
     tiles: tiles,
-    position,
+    position : position,
+    cogScores: cogScores,
   };
 
 }

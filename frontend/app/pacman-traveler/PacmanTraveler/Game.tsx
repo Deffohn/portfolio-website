@@ -6,6 +6,7 @@ import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
 import { GameMap } from "./GameMap";
 import { basicChunkGenerator } from "./generatorAssets/chunkGenerators/basicChunkGenerator";
+import { CogScore } from "./CogScore";
 
 const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;
@@ -131,6 +132,12 @@ const Game = () => {
       obstacles.forEach((obstacle : Obstacle) => {
         obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
       });
+
+      // draw cogscores
+      gameMap.mapChunks.forEach ((chunk : MapChunk) => {
+        chunk.cogScores.forEach((cogScore : CogScore) => {
+          cogScore.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
+      })});
 
       // draw pacman
       ctx.drawImage(
