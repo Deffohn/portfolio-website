@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateObjectsAndObstaclesOnChunk } from "./assets/gameAssets";
 import { Direction, MapChunk, Position } from "./mapTypes";
 import { PacmanPlayer } from "./PacmanPlayer";
 import { Obstacle } from "./Obstacle";
 import { GameMap } from "./GameMap";
 import { basicChunkGenerator } from "./generatorAssets/chunkGenerators/basicChunkGenerator";
+import { CogScore } from "./CogScore";
 
 const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;
@@ -62,6 +63,7 @@ const handleKeyUp = (e: { key: string; }) => {
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     // Add event listeners for keydown and keyup events
@@ -120,6 +122,7 @@ const Game = () => {
 
       if (direction.x !== 0 || direction.y !== 0) {
         pacman.move(direction, pacmanSpeed, obstacles);
+        gameMap.isPacmanScoring(pacman);
       }
 
       let deltaPacmanPx: Position = {
@@ -131,6 +134,12 @@ const Game = () => {
       obstacles.forEach((obstacle : Obstacle) => {
         obstacle.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
       });
+
+      // draw cogscores
+      gameMap.mapChunks.forEach ((chunk : MapChunk) => {
+        chunk.cogScores.forEach((cogScore : CogScore) => {
+          cogScore.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
+      })});
 
       // draw pacman
       ctx.drawImage(
@@ -144,18 +153,27 @@ const Game = () => {
         pacmanWidthPx,
         pacmanHeightPx,
       );
+
+      setScore(pacman.score);
     }, 25 /*25 default*/ /* ms, frame rate */);
 
   }, []);
 
   return (
-    <div className="flex items-center m-1 bg-black">
-      <canvas className="outline-none"
-        ref={canvasRef}
-        width={mapChunkSize * tileWidthPx}
-        height={mapChunkSize * tileHeightPx}
-        tabIndex={0}
-      />
+    <div>
+      <h3 className="text-white">Score: {score}</h3>
+      <div className='flex mx-auto flex-wrap items-center bg-white rounded'>
+        <div className='flex items-center bg-black rounded m-1'>
+          <div className="flex items-center m-1 bg-black">
+            <canvas className="outline-none"
+              ref={canvasRef}
+              width={mapChunkSize * tileWidthPx}
+              height={mapChunkSize * tileHeightPx}
+              tabIndex={0}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

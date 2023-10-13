@@ -215,3 +215,27 @@ export const chunkTileProximityRectangles = ((chunkSizeInTiles: number): {
     },
   ]);
 });
+
+const cogScoreImageSrcStorage = "pacman-traveler/resources/cogscores/";
+export const cogTypes: {
+  imagePath: string,
+  score: number,
+  totalFrames: number,
+  pxPeriod: number,
+  ySize: number,
+}[] = [
+  {
+    imagePath: cogScoreImageSrcStorage+"red_cogscore.png",
+    score: 2,
+    totalFrames: 8,
+    pxPeriod: 256,
+    ySize: 256,
+  },
+  {
+    imagePath: cogScoreImageSrcStorage+"green_cogscore.png",
+    score: 3,
+    totalFrames: 8,
+    pxPeriod: 256,
+    ySize: 256,
+  },
+]

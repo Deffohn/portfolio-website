@@ -20,8 +20,8 @@ const PacmanTraveler = () => {
             This is a game experiment for displaying terrain generation algorithms.
             Use WASD to move as Pacman. Only playable with a computer keyboard.
           </h2>
-          <div className='flex mx-auto flex-wrap items-center bg-white rounded'>
-            <div className='flex items-center bg-black rounded m-1'>
+          <div className='flex mx-auto flex-wrap items-center'>
+            <div className='flex'>
             <Game/>
             </div>
           </div>
