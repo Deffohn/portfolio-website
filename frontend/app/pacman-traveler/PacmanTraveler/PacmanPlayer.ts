@@ -5,11 +5,17 @@ export class PacmanPlayer implements Position {
   x: number;
   y: number;
   size: number;
+  score: number;
 
   constructor(x: number, y: number, size: number) {
     this.x = x;
     this.y = y;
     this.size = size;
+    this.score = 0;
+  }
+
+  increaseScore(score: number) {
+    this.score += score;
   }
 
   move(direction: Direction, speed: number, obstacles: Obstacle[]) {
@@ -38,6 +44,7 @@ export class PacmanPlayer implements Position {
 
     if (xDoMove) this.x = newPosition.x;
     if (yDoMove) this.y = newPosition.y;
+
   }
 
   // draw Pacman here canvasDraw();

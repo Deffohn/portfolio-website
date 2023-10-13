@@ -36,6 +36,15 @@ export class CogScore implements Position {
     this.score = scoring;
   }
 
+  isPacmanColliding(x: number, y: number, pacmanSize: number): boolean {
+    return (
+      x + pacmanSize / 2 > this.x &&
+      x - pacmanSize / 2 < this.x + 1 &&
+      y + pacmanSize / 2 > this.y &&
+      y - pacmanSize / 2 < this.y + 1
+    );
+  }
+
   canvasDraw(
     ctx: CanvasRenderingContext2D,
     tileWidthPx: number, tileHeightPx: number,

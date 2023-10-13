@@ -1,5 +1,6 @@
 import { MapChunk, MapTile, Position } from "./mapTypes";
 import {chunkTileProximityRectangles} from "./generatorAssets/generatorAssets";
+import { PacmanPlayer } from "./PacmanPlayer";
 
 export class GameMap {
   chunkSizeInTiles: number;
@@ -69,6 +70,29 @@ export class GameMap {
     });
 
     return tiles;
+  }
+
+  isPacmanScoring(pacman: PacmanPlayer): boolean {
+    let scoring: boolean = false;
+    this.mapChunks.forEach(chunk => {
+      let gatherCogScored: Position[] = [];
+      chunk.cogScores.forEach(cogScore => {
+        if (cogScore === undefined) return;
+        if (cogScore.isPacmanColliding(pacman.x, pacman.y, pacman.size)) {
+          pacman.increaseScore(cogScore.score);
+          gatherCogScored.push({ x: cogScore.x, y: cogScore.y});
+          scoring = true;
+        }
+      });
+
+      // delete gatherCogScored
+      gatherCogScored.forEach(cogScored => {
+        chunk.cogScores = chunk.cogScores.filter(cogScore => {
+          return !(cogScore.x === cogScored.x && cogScore.y === cogScored.y);
+        });
+      });
+    });
+    return scoring;
   }
 
   refreshChunks(pacmanPosition: Position): void {
