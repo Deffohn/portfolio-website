@@ -1,6 +1,7 @@
 "use client";
 import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 type ProjectLink = {
   link: string,
@@ -16,123 +17,145 @@ type ProjectContentInput = {
   projectLinks?: ProjectLink[],
 };
 
-const ProjectPicture: React.FC<{src: string, alt: string}> = (
-  {src, alt}
+const ProjectTextContent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
+  {screenWidth, contentInput}
 ) => {
   return (
-    <div>
-      <img src={src} alt={alt} className="md:h-30 md:w-auto md:mb-10 md:mt-10 lg:w-40 lg:h-40"/>
-    </div>
-  );
-};
-
-const ProjectComponent: React.FC<{contentInput: ProjectContentInput}> = (
-  {contentInput}
-) => {
-  return (
-    <div className='bg-black rounded-md border-4 border-gray-500 m-2.5
-      mg:w-320 mg:min-h-480
-    '>
+    <div className={(screenWidth < 800 ? 'flex flex-1 flex-col w-2/3 max-w-2/3 mx-2.5 my-2.5 justify-between' 
+    : 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
+    )}>
       <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-        <div className="flex mx-auto">
+        <div className="flex mx-1.5 my-2.5 items-center justify-center">
+          <h3 className='text-center text-white no-underline break-words
+                        text-xl'
+          >
+            {contentInput.projectName}
+          </h3>
+        </div>
+      </div>
+      <div className="flex flex-col mx-2.5 my-2.5 justify-between">
+        <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
+      </div>
+      <div className="flex flex-col mx-2.5 my-2.5 justify-between">
+        <div className="flex mx-1.5 my-2.5 items-center justify-center
+                          max-w-md">
           { 
-            contentInput.illustrationPath != null ?
-            <ProjectPicture src={contentInput.illustrationPath}
-              alt={"\""+contentInput.projectName+"\""+" Project Picture"}
-            />
-            :
-            <ProjectPicture src={"/projects/default.png"}
-              alt={"Default Project Picture"}
-            />
+            contentInput.projectDescription &&
+            <a className="text-left text-white no-underline">
+              {contentInput.projectDescription}
+            </a>
           }
         </div>
-        <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-          <div className="flex mx-1.5 my-2.5 items-center justify-center">
-            <h3 className='text-center text-white no-underline break-words
-                          text-xl'
-            >
-              {contentInput.projectName}
-            </h3>
-          </div>
-        </div>
+      </div>
+      { /* {project links} */
+        contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
+        
+        <div className='flex flex-col justify-between'>
+
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
           <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
         </div>
         <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-          <div className="flex mx-1.5 my-2.5 items-center justify-center
-                            md:max-w-md">
-            { 
-              contentInput.projectDescription &&
-              <a className="text-left text-white no-underline">
-                {contentInput.projectDescription}
-              </a>
-            }
-          </div>
-        </div>
-        { /* {project links} */
-          contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
-          
-          <div className='flex flex-col justify-between'>
-
-          <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-            <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
-          </div>
-          <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-            <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
-              {
-                contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
-
-                  let src: string = "projects/linkIllustrations/High-contrast-emblem-symbolic-link.png";
-                  if (link.illustrationPath != null) {
-                    src = "projects/linkIllustrations/"+link.illustrationPath;
-                  }
-
-                  return (
-                    <a key={projectLinkIndex} href={link.link}
-                      className="mx-auto block"
-                      title={link.linkName}
-                    >
-                      <Image
-                        src={src}
-                        alt={link.linkName}
-                        width={25}
-                        height={25}
-                      />  
-                    </a>
-                  );
-                })
-              }
-              
-            </div>
-          </div>
-
-          </div>
-          
-        }
-        { /* {project tags} */
-          contentInput.projectTags && contentInput.projectTags?.length != 0 &&
-
-          <div className="md:justify-between mb-2.5 flex flex-wrap">
+          <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
             {
-              contentInput.projectTags.map((tag: string, projectTagIndex) => {
+              contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
+
+                let src: string = "projects/linkIllustrations/High-contrast-emblem-symbolic-link.png";
+                if (link.illustrationPath != null) {
+                  src = "projects/linkIllustrations/"+link.illustrationPath;
+                }
+
                 return (
-                  <div key={projectTagIndex} className="inline-block align-middle bg-gray-700 rounded md:ml-0.5 ml-1.5 mb-1.5">
-                    <a className="flex m-1.5 text-white text-center">
-                      {tag}
-                    </a>
-                  </div>
+                  <a key={projectLinkIndex} href={link.link}
+                    className="mx-auto block"
+                    title={link.linkName}
+                  >
+                    <Image
+                      src={src}
+                      alt={link.linkName}
+                      width={25}
+                      height={25}
+                    />  
+                  </a>
                 );
               })
             }
+            
           </div>
-        }
+        </div>
+
+        </div>
         
-      </div>
+      }
+      { /* {project tags} */
+        contentInput.projectTags && contentInput.projectTags?.length != 0 &&
+
+        <div className={(screenWidth < 800 ? 'justify-between mb-2.5 flex flex-wrap' 
+        : 'justify-between mb-2.5  shrink-0 flex-nowrap max-w-md' 
+        )}>
+        {
+          contentInput.projectTags.map((tag: string, projectTagIndex) => {
+            return (
+              <div key={projectTagIndex} className="inline-block align-middle bg-gray-700 rounded ml-1.5 mb-1.5">
+                <a className="flex m-1.5 text-white text-center">
+                  {tag}
+                </a>
+              </div>
+            );
+          })
+        }
+        </div>
+      }
     </div>
   );
+}
+
+const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
+  {screenWidth, contentInput}
+) => {
+  if (screenWidth < 800) {
+    return (
+      <div className="flex flex-row m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
+        <div className='flex flex-col items-center m-3 border-4 border-gray-500 rounded-md'>
+          <div className='flex items-center m-1'>
+            <Image
+              src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
+              alt={contentInput.illustrationPath != null ?
+                "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
+              width={0.25 * screenWidth}
+              height={0.25 * screenWidth}
+              className=''
+            />
+          </div>
+        </div>
+        <ProjectTextContent contentInput={contentInput} screenWidth={screenWidth}/>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex flex-col m-2.5 justify-between items-center 
+                      rounded-md border-4 border-gray-500 bg-black w-160 h-320">
+        <div className='flex items-center m-2.5 ml-5 mt-8  border-4 border-gray-500 rounded-md'>
+          <div className='flex items-center m-1'>
+            <Image
+              src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
+              alt={contentInput.illustrationPath != null ?
+                "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
+              width={160}
+              height={160}
+            />
+          </div>
+        </div>
+        <ProjectTextContent contentInput={contentInput} screenWidth={screenWidth}/>
+      </div>
+    );
+  }
 };
 
 const Projects: React.FC = () => {
+
+  const [screenWidth, setScreenWidth] = useState(0);
+
   const projects: ProjectContentInput[] = [
     {
       illustrationPath: "/projects/portfolio.png",
@@ -185,21 +208,51 @@ const Projects: React.FC = () => {
     },
   ];
 
-  return (
-    <div>
-      <h2 className='text-3xl font-bold ml-2'>Projects</h2>
-      <div className="flex flex-wrap ml-2">
-        {projects.map((value: ProjectContentInput, projectIndex) => {
-          return (
-            <div key={projectIndex}>
-              <ProjectComponent contentInput={value}/>
-            </div>
-          );
-        })}
+  useEffect(() => {
+    setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setScreenWidth(window.innerWidth);
+    });
+  }, []);
+
+  if (screenWidth < 800) {
+    return (
+      <div>
+        <h2 className='text-3xl font-bold ml-2'>Projects</h2>
+        
+        <div className="flex flex-col items-center justify-between">
+          {projects.map((project, index) => {
+            return (
+              <ProjectComponent
+                key={index}
+                screenWidth={screenWidth}
+                contentInput={project}
+              />
+            );
+          })}
+        </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <h2 className='text-3xl font-bold ml-2'>Projects</h2>
+        <div className="flex flex-wrap">
+          {projects.map((project, index) => {
+            return (
+              <ProjectComponent
+                key={index}
+                screenWidth={screenWidth}
+                contentInput={project}
+              />
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  
 };
-  
+
 export default Projects;
-  
