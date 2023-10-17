@@ -7,18 +7,30 @@ export class PacmanPlayer implements Position {
   size: number;
   score: number;
 
-  constructor(x: number, y: number, size: number) {
+  pacmanPlayerImage: HTMLImageElement;
+  pacmanDrawingPosition: Position;
+
+  constructor(x: number, y: number, size: number, pacmanPlayerImageSrc: string, mapChunkSize: number) {
     this.x = x;
     this.y = y;
     this.size = size;
+
+    this.pacmanPlayerImage = new Image();
+    this.pacmanPlayerImage.src = pacmanPlayerImageSrc;
+
+    this.pacmanDrawingPosition = {
+      x: mapChunkSize / 2 - this.size / 2,
+      y: mapChunkSize / 2 - this.size / 2,
+    };
+
     this.score = 0;
   }
 
-  increaseScore(score: number) {
+  increaseScore(score: number): void {
     this.score += score;
   }
 
-  move(direction: Direction, speed: number, obstacles: Obstacle[]) {
+  move(direction: Direction, speed: number, obstacles: Obstacle[]): void {
 
     // normalize direction vector
     let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -47,6 +59,37 @@ export class PacmanPlayer implements Position {
 
   }
 
-  // draw Pacman here canvasDraw();
+  canvasDraw(
+    ctx: CanvasRenderingContext2D,
+    tileWidthPx: number, tileHeightPx: number,
+
+  ): void {
+
+    let pacmanDrawingPositionPx: Position = this.getPacmanDrawingPositionPx(
+      tileWidthPx,
+      tileHeightPx,
+    );
+    ctx.drawImage(
+      this.pacmanPlayerImage,
+
+      // position on canvas
+      pacmanDrawingPositionPx.x,
+      pacmanDrawingPositionPx.y,
+
+      // px size on canvas
+      this.size * tileWidthPx,
+      this.size * tileHeightPx,
+    );
+  }
+
+  getPacmanDrawingPositionPx(
+    tileWidthPx: number,
+    tileHeightPx: number,
+  ): Position {
+    return {
+      x: this.pacmanDrawingPosition.x * tileWidthPx,
+      y: this.pacmanDrawingPosition.y * tileHeightPx,
+    };
+  }
   
 }
