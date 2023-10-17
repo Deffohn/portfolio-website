@@ -10,7 +10,12 @@ export class PacmanPlayer implements Position {
   pacmanPlayerImage: HTMLImageElement;
   pacmanDrawingPosition: Position;
 
-  constructor(x: number, y: number, size: number, pacmanPlayerImageSrc: string, mapChunkSize: number) {
+  constructor(
+    x: number, y: number,
+    size: number,
+    pacmanPlayerImageSrc: string,
+    mapChunkWidth: number, mapChunkHeight: number,
+  ) {
     this.x = x;
     this.y = y;
     this.size = size;
@@ -19,8 +24,8 @@ export class PacmanPlayer implements Position {
     this.pacmanPlayerImage.src = pacmanPlayerImageSrc;
 
     this.pacmanDrawingPosition = {
-      x: mapChunkSize / 2 - this.size / 2,
-      y: mapChunkSize / 2 - this.size / 2,
+      x: mapChunkWidth / 2 - this.size / 2,
+      y: mapChunkHeight / 2 - this.size / 2,
     };
 
     this.score = 0;
