@@ -122,12 +122,7 @@ const Game = () => {
         gameMap.isPacmanScoring(pacman);
       }
 
-      // TODO replace by a pacman method getDeltaPacmanPositionPx()
-      let pacmanDrawingPosition: Position = pacman.getPacmanDrawingPositionPx(tileWidthPx, tileHeightPx);
-      let deltaPacmanPx: Position = {
-        x: pacman.x * tileWidthPx - pacmanDrawingPosition.x - (pacmanSize * tileWidthPx) / 2,
-        y: pacman.y * tileHeightPx - pacmanDrawingPosition.y - (pacmanSize * tileHeightPx) / 2,
-      };
+      let deltaPacmanPx: Position = pacman.getDeltaPacmanPositionPx(tileWidthPx, tileHeightPx);
       
       // draw tiles
       obstacles.forEach((obstacle : Obstacle) => {

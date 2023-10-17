@@ -91,5 +91,17 @@ export class PacmanPlayer implements Position {
       y: this.pacmanDrawingPosition.y * tileHeightPx,
     };
   }
+
+  getDeltaPacmanPositionPx(
+    tileWidthPx: number,
+    tileHeightPx: number,
+  ): Position {
+    let pacmanDrawingPositionPx: Position = this.getPacmanDrawingPositionPx(tileWidthPx, tileHeightPx);
+    return {
+      x: this.x * tileWidthPx - pacmanDrawingPositionPx.x - (this.size * tileWidthPx) / 2,
+      y: this.y * tileHeightPx - pacmanDrawingPositionPx.y - (this.size * tileHeightPx) / 2,
+    };
+  }
+
   
 }
