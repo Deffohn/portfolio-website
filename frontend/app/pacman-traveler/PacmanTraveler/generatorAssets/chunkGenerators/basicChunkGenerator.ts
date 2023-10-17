@@ -6,15 +6,15 @@ import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection, cogTyp
 
 export const basicChunkGenerator = (
   position: Position,
-  chunkSize: number,
+  chunkWidth: number, chunkHeight: number,
   proximityTiles: MapTile[],
 ): MapChunk => {
 
   let tiles: MapTile[] = [];
 
   // generate tiles with undefined paths
-  for (let i = 0; i < chunkSize; i++) {
-    for (let j = 0; j < chunkSize; j++) {
+  for (let i = 0; i < chunkWidth; i++) {
+    for (let j = 0; j < chunkHeight; j++) {
       tiles.push({
         x: position.x + i,
         y: position.y + j,
@@ -30,8 +30,8 @@ export const basicChunkGenerator = (
   // (0, 0) center map specific chunk generation
   if (position.x === 0 && position.y === 0) {
     let centerChunkPosition: Position = {
-      x: chunkSize / 2,
-      y: chunkSize / 2,
+      x: chunkWidth / 2,
+      y: chunkHeight / 2,
     };
 
     tiles.push(...centerMapPattern.map((patternTile: MapTile): MapTile => {
@@ -55,14 +55,14 @@ export const basicChunkGenerator = (
 
   // generate cogScores
   let cogScores: CogScore[] = [];
-  let cogScoreProbability: number = 4 / (chunkSize * chunkSize);
+  let cogScoreProbability: number = 4 / (chunkWidth * chunkHeight);
   tiles.forEach((tile) => {
     // first skip tiles in the middle of the map
     if (
-      tile.x < chunkSize / 2 + 2 
-      && tile.x >= chunkSize / 2 - 2 
-      && tile.y < chunkSize / 2 + 2 
-      && tile.y >= chunkSize / 2 - 2 
+      tile.x < chunkWidth / 2 + 2 
+      && tile.x >= chunkWidth / 2 - 2 
+      && tile.y < chunkHeight / 2 + 2 
+      && tile.y >= chunkHeight / 2 - 2 
     ) return;
 
     if (Math.random() < cogScoreProbability) {

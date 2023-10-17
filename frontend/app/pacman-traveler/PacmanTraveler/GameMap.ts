@@ -3,11 +3,12 @@ import {chunkTileProximityRectangles} from "./generatorAssets/generatorAssets";
 import { PacmanPlayer } from "./PacmanPlayer";
 
 export class GameMap {
-  chunkSizeInTiles: number;
+  chunkWidth: number;
+  chunkHeight: number;
   mapWidthInChunks: number;
   mapHeightInChunks: number;
 
-  chunkGenerator: (position: Position, chunkSize: number, proximityTiles: MapTile[]) => MapChunk;
+  chunkGenerator: (position: Position, chunkWidth: number, chunkHeight: number, proximityTiles: MapTile[]) => MapChunk;
   chunkTileProximityRectangles: {
     relativeChunkPosition: Position,
     upLeftPosition: Position,
@@ -17,15 +18,16 @@ export class GameMap {
 
 
   constructor(
-    chunkSizeInTiles: number,
+    chunkWidth: number, chunkHeight: number,
     mapWidthInChunks: number, mapHeightInChunks: number,
-    chunkGenerator: (position: Position, chunkSize: number, proximityTiles: MapTile[]) => MapChunk,
+    chunkGenerator: (position: Position, chunkWidth: number, chunkHeight: number, proximityTiles: MapTile[]) => MapChunk,
   ) {
     /**
     * @param mapWidthInChunks - Only odd numbers being at least 3 are supported
     * @param mapHeightInChunks - Only odd numbers being at least 3 are supported
     */
-    this.chunkSizeInTiles = chunkSizeInTiles;
+    this.chunkWidth = chunkWidth;
+    this.chunkHeight = chunkHeight;
 
     if (mapWidthInChunks % 2 === 0 || mapHeightInChunks % 2 === 0) {
       throw new Error('Only odd numbers are supported');
@@ -41,7 +43,7 @@ export class GameMap {
 
     this.chunkGenerator = chunkGenerator;
 
-    this.chunkTileProximityRectangles = chunkTileProximityRectangles(chunkSizeInTiles);
+    this.chunkTileProximityRectangles = chunkTileProximityRectangles(chunkWidth, chunkHeight,);
   }
 
   findChunk(chunkPosition: Position): MapChunk | undefined {
@@ -98,8 +100,8 @@ export class GameMap {
   refreshChunks(pacmanPosition: Position): void {
 
     let pacmanInChunkPosition = {
-      x: Math.floor(pacmanPosition.x / this.chunkSizeInTiles) * this.chunkSizeInTiles,
-      y: Math.floor(pacmanPosition.y / this.chunkSizeInTiles) * this.chunkSizeInTiles,
+      x: Math.floor(pacmanPosition.x / this.chunkWidth) * this.chunkWidth,
+      y: Math.floor(pacmanPosition.y / this.chunkHeight) * this.chunkHeight,
     };
 
     // gather chunks not generated, refresh and drop old chunks no longer in pacman's range
@@ -112,8 +114,8 @@ export class GameMap {
       for (let j = -heightEuclidianQuotient; j < heightEuclidianQuotient + 1; j++) {
 
         let chunkPosition = {
-          x: pacmanInChunkPosition.x + i * this.chunkSizeInTiles,
-          y: pacmanInChunkPosition.y + j * this.chunkSizeInTiles,
+          x: pacmanInChunkPosition.x + i * this.chunkWidth,
+          y: pacmanInChunkPosition.y + j * this.chunkHeight,
         };
 
         let chunk = this.findChunk(chunkPosition);
@@ -139,7 +141,8 @@ export class GameMap {
     newMapChunkPositionsToGenerate.forEach(chunkPosition => {
       this.mapChunks.push(this.chunkGenerator(
         chunkPosition,
-        this.chunkSizeInTiles,
+        this.chunkWidth,
+        this.chunkHeight,
         this.findProximityTilesToChunk(chunkPosition),
       ));
     });

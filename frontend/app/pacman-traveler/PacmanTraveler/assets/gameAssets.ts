@@ -1,4 +1,4 @@
-import { mapChunkSize, pathBorderWidth } from "../Game";
+import { pathBorderWidth } from "../Game";
 import { Obstacle, RectangleObstacle } from "../Obstacle";
 import { MapChunk, MapTile, Position } from "../mapTypes";
 

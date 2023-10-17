@@ -12,7 +12,8 @@ const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;
 const tileHeightPx = tileRatioPx;
 
-export const mapChunkSize: number = 12
+const mapChunkWidth = 12;
+const mapChunkHeight = 12;
 const mapWidthInChunks: number = 3
 const mapHeightInChunks: number = 3
 
@@ -84,14 +85,15 @@ const Game = () => {
 
     const pacman = new PacmanPlayer(
       // in the middle of the (0, 0) chunk
-      mapChunkSize / 2, mapChunkSize / 2, // forces having a free moving zone by the intersection of 4 tiles
+      mapChunkWidth / 2, mapChunkHeight / 2, // forces having a free moving zone by the intersection of 4 tiles
 
       pacmanSize,
       pacmanPlayerImageSrc,
-      mapChunkSize,
+      mapChunkWidth,
+      mapChunkHeight,
     );
 
-    const gameMap: GameMap = new GameMap(mapChunkSize, mapWidthInChunks, mapHeightInChunks, basicChunkGenerator);
+    const gameMap: GameMap = new GameMap(mapChunkWidth, mapChunkHeight, mapWidthInChunks, mapHeightInChunks, basicChunkGenerator);
 
     setInterval(() => {
 
@@ -150,8 +152,8 @@ const Game = () => {
           <div className="flex items-center m-1 bg-black">
             <canvas className="outline-none"
               ref={canvasRef}
-              width={mapChunkSize * tileWidthPx}
-              height={mapChunkSize * tileHeightPx}
+              width={mapChunkWidth * tileWidthPx}
+              height={mapChunkHeight * tileHeightPx}
               tabIndex={0}
             />
           </div>
