@@ -21,9 +21,6 @@ export const pacmanSpeed = 0.06; // ratio of tile size, do prefer 1/n where n is
 export const pathBorderWidth = 0.1; // ratio of tile size
 
 const pacmanPlayerImageSrc = "pacman-traveler/resources/pacman.png";
-const pacmanDrawingPositionPx = (mapChunkSize / 2 - pacmanSize / 2) * tileRatioPx;
-const pacmanWidthPx = pacmanSize * tileWidthPx;
-const pacmanHeightPx = pacmanSize * tileHeightPx;
 
 // create absolute object storing pressed keys
 const pressedKeys = {
@@ -86,15 +83,15 @@ const Game = () => {
     if (!ctx) return;
 
     const pacman = new PacmanPlayer(
-      (mapChunkSize /*+ 1*/) / 2, (mapChunkSize /*+ 1*/) / 2,
+      // in the middle of the (0, 0) chunk
+      mapChunkSize / 2, mapChunkSize / 2, // forces having a free moving zone by the intersection of 4 tiles
+
       pacmanSize,
+      pacmanPlayerImageSrc,
+      mapChunkSize,
     );
 
-    
     const gameMap: GameMap = new GameMap(mapChunkSize, mapWidthInChunks, mapHeightInChunks, basicChunkGenerator);
-
-    const pacmanPlayerImage = new Image();
-    pacmanPlayerImage.src = pacmanPlayerImageSrc;
 
     setInterval(() => {
 
@@ -125,9 +122,11 @@ const Game = () => {
         gameMap.isPacmanScoring(pacman);
       }
 
+      // TODO replace by a pacman method getDeltaPacmanPositionPx()
+      let pacmanDrawingPosition: Position = pacman.getPacmanDrawingPositionPx(tileWidthPx, tileHeightPx);
       let deltaPacmanPx: Position = {
-        x: pacman.x * tileWidthPx - pacmanDrawingPositionPx - pacmanWidthPx / 2,
-        y: pacman.y * tileHeightPx - pacmanDrawingPositionPx - pacmanHeightPx / 2,
+        x: pacman.x * tileWidthPx - pacmanDrawingPosition.x - (pacmanSize * tileWidthPx) / 2,
+        y: pacman.y * tileHeightPx - pacmanDrawingPosition.y - (pacmanSize * tileHeightPx) / 2,
       };
       
       // draw tiles
@@ -141,18 +140,7 @@ const Game = () => {
           cogScore.canvasDraw(ctx, tileWidthPx, tileHeightPx, deltaPacmanPx.x, deltaPacmanPx.y);
       })});
 
-      // draw pacman
-      ctx.drawImage(
-        pacmanPlayerImage,
-
-        // position on canvas
-        pacmanDrawingPositionPx,
-        pacmanDrawingPositionPx,
-
-        // px size on canvas
-        pacmanWidthPx,
-        pacmanHeightPx,
-      );
+      pacman.canvasDraw(ctx, tileWidthPx, tileHeightPx,);
 
       setScore(pacman.score);
     }, 25 /*25 default*/ /* ms, frame rate */);
