@@ -95,34 +95,13 @@ const Game = () => {
 
     const gameMap: GameMap = new GameMap(mapChunkWidth, mapChunkHeight, mapWidthInChunks, mapHeightInChunks, basicChunkGenerator);
 
+    let obstacles: Obstacle[] = [];
+
+    // graphic loop
     setInterval(() => {
 
       // clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      gameMap.refreshChunks({
-        x: pacman.x,
-        y: pacman.y,
-      });
-
-      let obstacles: Obstacle[] = gameMap.mapChunks.map((chunk : MapChunk) => generateObstaclesOnChunk(chunk)).flat();
-
-      // TODO handle multiple keys pressed at once
-      let direction: Direction = new Direction(0, 0);
-      if (pressedKeys.arrowUp) {
-        direction.y += -1;
-      } if (pressedKeys.arrowDown) {
-        direction.y += 1;
-      } if (pressedKeys.arrowLeft) {
-        direction.x += -1;
-      } if (pressedKeys.arrowRight) {
-        direction.x += 1;
-      }
-
-      if (direction.x !== 0 || direction.y !== 0) {
-        pacman.move(direction, pacmanSpeed, obstacles);
-        gameMap.isPacmanScoring(pacman);
-      }
 
       let deltaPacmanPx: Position = pacman.getDeltaPacmanPositionPx(tileWidthPx, tileHeightPx);
       
@@ -141,6 +120,34 @@ const Game = () => {
 
       setScore(pacman.score);
     }, 25 /*25 default*/ /* ms, frame rate */);
+
+    // process loop
+    setInterval(() => {
+
+      gameMap.refreshChunks({
+        x: pacman.x,
+        y: pacman.y,
+      });
+
+      obstacles = gameMap.mapChunks.map((chunk : MapChunk) => generateObstaclesOnChunk(chunk)).flat();
+
+      // TODO handle multiple keys pressed at once
+      let direction: Direction = new Direction(0, 0);
+      if (pressedKeys.arrowUp) {
+        direction.y += -1;
+      } if (pressedKeys.arrowDown) {
+        direction.y += 1;
+      } if (pressedKeys.arrowLeft) {
+        direction.x += -1;
+      } if (pressedKeys.arrowRight) {
+        direction.x += 1;
+      }
+
+      if (direction.x !== 0 || direction.y !== 0) {
+        pacman.move(direction, pacmanSpeed, obstacles);
+        gameMap.isPacmanScoring(pacman);
+      }
+    }, 25 /*25 default*/ /* ms, game tick rate */);
 
   }, []);
 
