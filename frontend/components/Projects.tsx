@@ -215,7 +215,7 @@ const Projects: React.FC = () => {
       ],
       projectLinks: [
         {
-          link: getBaseUrl()+"pacman-traveler",
+          link: getBaseUrl()+"/pacman-traveler",
           linkName: "Pacman Traveler Website",
         },
         {
