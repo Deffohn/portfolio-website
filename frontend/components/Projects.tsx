@@ -24,10 +24,12 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
 ) => {
   
   return (
-    <div className={(screenWidth < responsiveWidthlimit ? 'flex flex-1 flex-col w-2/3 max-w-2/3 mx-2.5 my-2.5 justify-between' 
+    <div className={(screenWidth < responsiveWidthlimit ? 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
     : 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
     )}>
-      <ProjectTitle contentInput={contentInput}/>
+      { /* {project title} */
+        !(screenWidth < responsiveWidthlimit) && <ProjectTitle contentInput={contentInput}/>
+      }
       { /* {project links} */
         contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
         
@@ -68,8 +70,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
       }
       <ProjectSplitter/>
       <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-        <div className="flex mx-1.5 my-2.5 items-center justify-center
-                          max-w-md">
+        <div className="flex mx-1.5 my-2.5 items-center justify-center">
           { 
             contentInput.projectDescription &&
             <a className="text-left text-white no-underline">
@@ -82,7 +83,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
         contentInput.projectTags && contentInput.projectTags?.length != 0 &&
 
         <div className={(screenWidth < responsiveWidthlimit ? 'justify-between mb-2.5 flex flex-wrap' 
-        : 'justify-between mb-2.5  shrink-0 flex-nowrap max-w-md' 
+        : 'justify-between mb-2.5 shrink-0 flex-nowrap max-w-md' 
         )}>
         {
           contentInput.projectTags.map((tag: string, projectTagIndex) => {
@@ -103,7 +104,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
 
 const ProjectTitle: React.FC<{contentInput: ProjectContentInput}> = ({contentInput}) => {
   return (
-    <div className="flex mx-4 my-5 items-center justify-center">
+    <div className="flex mx-4 my-5 items-center justify-center max-w-1/2">
       <h3 className='text-center text-white no-underline break-words
                     text-xl'
       >
@@ -128,18 +129,21 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   if (screenWidth < responsiveWidthlimit) {
     return (
       <div className='w-full'>
-        <div className="flex flex-row m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
-          <div className='flex flex-col items-center m-3 border-4 border-gray-500 rounded-md'>
-            <div className='flex items-center m-1'>
-              <Image
-                src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
-                alt={contentInput.illustrationPath != null ?
-                  "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
-                width={0.25 * screenWidth}
-                height={0.25 * screenWidth}
-                className=''
-              />
+        <div className="flex flex-col m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
+          <div className='flex flex-row'>
+            <div className='flex items-center m-3 border-4 border-gray-500 rounded-md'>
+              <div className='flex items-center m-1'>
+                <Image
+                  src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
+                  alt={contentInput.illustrationPath != null ?
+                    "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
+                  width={0.25 * screenWidth}
+                  height={0.25 * screenWidth}
+                  className=''
+                />
+              </div>
             </div>
+            <ProjectTitle contentInput={contentInput}/>
           </div>
           <ProjectDetailsContent contentInput={contentInput} screenWidth={screenWidth}/>
         </div>

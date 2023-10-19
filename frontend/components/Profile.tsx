@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
         />
         <h1 className='text-4xl font-bold text-center'>Maxime Parmentier</h1>
         <h2 className='text-2xl font-bold '>Software Engineer</h2>
-        <h3 className='text-xl font-bold '>Backend developer - DevOps - Cloud</h3>
+        <h3 className='text-xl font-bold '>Backend developer - practicing DevOps - Cloud engineering</h3>
       </div>
     </div> 
   )
