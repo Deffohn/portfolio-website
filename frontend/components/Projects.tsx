@@ -3,6 +3,8 @@ import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+const responsiveWidthlimit: number = 850;
+
 type ProjectLink = {
   link: string,
   linkName: string,
@@ -17,25 +19,54 @@ type ProjectContentInput = {
   projectLinks?: ProjectLink[],
 };
 
-const ProjectTextContent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
+const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
   {screenWidth, contentInput}
 ) => {
+  
   return (
-    <div className={(screenWidth < 800 ? 'flex flex-1 flex-col w-2/3 max-w-2/3 mx-2.5 my-2.5 justify-between' 
+    <div className={(screenWidth < responsiveWidthlimit ? 'flex flex-1 flex-col w-2/3 max-w-2/3 mx-2.5 my-2.5 justify-between' 
     : 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
     )}>
-      <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-        <div className="flex mx-1.5 my-2.5 items-center justify-center">
-          <h3 className='text-center text-white no-underline break-words
-                        text-xl'
-          >
-            {contentInput.projectName}
-          </h3>
+      <ProjectTitle contentInput={contentInput}/>
+      { /* {project links} */
+        contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
+        
+        <div className='flex flex-col justify-between'>
+
+          <ProjectSplitter/>
+          <div className="flex flex-col mx-2.5 my-2.5 justify-between">
+            <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
+              {
+                contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
+
+                  let src: string = "projects/linkIllustrations/High-contrast-emblem-symbolic-link.png";
+                  if (link.illustrationPath != null) {
+                    src = "projects/linkIllustrations/"+link.illustrationPath;
+                  }
+
+                  return (
+                    <a key={projectLinkIndex} href={link.link}
+                      className="mx-auto block"
+                      title={link.linkName}
+                    >
+                      <Image
+                        src={src}
+                        alt={link.linkName}
+                        width={25}
+                        height={25}
+                      />  
+                    </a>
+                  );
+                })
+              }
+              
+            </div>
+          </div>
+
         </div>
-      </div>
-      <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-        <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
-      </div>
+        
+      }
+      <ProjectSplitter/>
       <div className="flex flex-col mx-2.5 my-2.5 justify-between">
         <div className="flex mx-1.5 my-2.5 items-center justify-center
                           max-w-md">
@@ -47,50 +78,10 @@ const ProjectTextContent: React.FC<{screenWidth: number, contentInput: ProjectCo
           }
         </div>
       </div>
-      { /* {project links} */
-        contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
-        
-        <div className='flex flex-col justify-between'>
-
-        <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-          <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
-        </div>
-        <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-          <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
-            {
-              contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
-
-                let src: string = "projects/linkIllustrations/High-contrast-emblem-symbolic-link.png";
-                if (link.illustrationPath != null) {
-                  src = "projects/linkIllustrations/"+link.illustrationPath;
-                }
-
-                return (
-                  <a key={projectLinkIndex} href={link.link}
-                    className="mx-auto block"
-                    title={link.linkName}
-                  >
-                    <Image
-                      src={src}
-                      alt={link.linkName}
-                      width={25}
-                      height={25}
-                    />  
-                  </a>
-                );
-              })
-            }
-            
-          </div>
-        </div>
-
-        </div>
-        
-      }
       { /* {project tags} */
         contentInput.projectTags && contentInput.projectTags?.length != 0 &&
 
-        <div className={(screenWidth < 800 ? 'justify-between mb-2.5 flex flex-wrap' 
+        <div className={(screenWidth < responsiveWidthlimit ? 'justify-between mb-2.5 flex flex-wrap' 
         : 'justify-between mb-2.5  shrink-0 flex-nowrap max-w-md' 
         )}>
         {
@@ -110,31 +101,55 @@ const ProjectTextContent: React.FC<{screenWidth: number, contentInput: ProjectCo
   );
 }
 
+const ProjectTitle: React.FC<{contentInput: ProjectContentInput}> = ({contentInput}) => {
+  return (
+    <div className="flex mx-4 my-5 items-center justify-center">
+      <h3 className='text-center text-white no-underline break-words
+                    text-xl'
+      >
+        {contentInput.projectName}
+      </h3>
+    </div>
+  );
+}
+
+const ProjectSplitter: React.FC = () => {
+  return (
+    <div className="flex flex-col mx-2.5 my-2.5 justify-between">
+      <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
+    </div>
+  );
+}
+  
+
 const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
   {screenWidth, contentInput}
 ) => {
-  if (screenWidth < 800) {
+  if (screenWidth < responsiveWidthlimit) {
     return (
-      <div className="flex flex-row m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
-        <div className='flex flex-col items-center m-3 border-4 border-gray-500 rounded-md'>
-          <div className='flex items-center m-1'>
-            <Image
-              src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
-              alt={contentInput.illustrationPath != null ?
-                "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
-              width={0.25 * screenWidth}
-              height={0.25 * screenWidth}
-              className=''
-            />
+      <div className='w-full'>
+        <div className="flex flex-row m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
+          <div className='flex flex-col items-center m-3 border-4 border-gray-500 rounded-md'>
+            <div className='flex items-center m-1'>
+              <Image
+                src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
+                alt={contentInput.illustrationPath != null ?
+                  "\""+contentInput.projectName+"\""+" Project Picture" : "Default Project Picture"}
+                width={0.25 * screenWidth}
+                height={0.25 * screenWidth}
+                className=''
+              />
+            </div>
           </div>
+          <ProjectDetailsContent contentInput={contentInput} screenWidth={screenWidth}/>
         </div>
-        <ProjectTextContent contentInput={contentInput} screenWidth={screenWidth}/>
       </div>
+      
     );
   } else {
     return (
       <div className="flex flex-col m-2.5 justify-between items-center 
-                      rounded-md border-4 border-gray-500 bg-black w-160 h-320">
+                      rounded-md border-4 border-gray-500 bg-black w-[24rem] h-[36rem] hover:h-full overflow-hidden">
         <div className='flex items-center m-2.5 ml-5 mt-8  border-4 border-gray-500 rounded-md'>
           <div className='flex items-center m-1'>
             <Image
@@ -146,7 +161,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
             />
           </div>
         </div>
-        <ProjectTextContent contentInput={contentInput} screenWidth={screenWidth}/>
+        <ProjectDetailsContent contentInput={contentInput} screenWidth={screenWidth}/>
       </div>
     );
   }
@@ -215,7 +230,7 @@ const Projects: React.FC = () => {
     });
   }, []);
 
-  if (screenWidth < 800) {
+  if (screenWidth < responsiveWidthlimit) {
     return (
       <div>
         <h2 className='text-3xl font-bold ml-2'>Projects</h2>
