@@ -1,42 +1,67 @@
+"use client";
+import { useState } from 'react';
+
 const Navbar: React.FC = () => {
   return (
-    <nav className='sticky top-0'>
-      <div className='ml-4 flex flex-row items-center gap-4 px-1'>
+    <nav className='flex sticky top-0 bg-slate-200 border-b-2 border-slate-500 shadow-2xl mb-8'>
+      <div className='ml-4 flex flex-row items-center'>
         {navList.map((navItem) => (
-          <a key={navItem.id} className="py-4 flex flex-row gap-1 items-center h-full" href={navItem.href}>
-            {navItem.icon && 
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="h-8 w-8 rounded-full" src={navItem.icon} alt={navItem.alt} />
-            }
-            {navItem.text && 
-              <div className="ml-3">
-                <h3 className="text-lg leading-6 font-medium text-white">
-                  {navItem.text?.title}
-                </h3>
-              </div>
-            }
-          </a>
+          <NavbarSectionItem key={navItem.id} navItem={navItem}/>
         ))}
       </div>
     </nav>
   );
 };
 
+const NavbarSectionItem: React.FC<{navItem: NavListItem}> = ({navItem}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <a
+      key={navItem.id}
+      className="flex flex-row gap-2 items-center h-full hover:bg-slate-500 text-black hover:text-slate-100" href={navItem.href}
+      onMouseOver={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}
+    >
+      <div className="m-4">
+        {navItem.icon && 
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="h-8 w-8 rounded-full"
+            src={isHovered ? navItem.icon!.hover : navItem.icon!.default}
+            alt={navItem.alt}
+          />
+        }
+        {navItem.text && 
+          <h3 className="text-lg leading-6 font-medium">
+            {navItem.text!.title}
+          </h3>
+        }
+      </div>
+    </a>
+  );
+};
+
 type NavListItem = {
   id: string,
   href: string,
-  icon?: string,
+  icon?: {
+    default: string,
+    hover: string,
+  },
   text?: {
     title: string
   },
-  alt: string
+  alt: string,
 }
 
 const navList: NavListItem[] = [
   {
     id: "home",
     href: "/",
-    icon: "/homeicon.png",
+    icon: {
+      default: "/homeicon.png",
+      hover: "/homeiconhover.png",
+    },
     alt: "Home"
   },
   {

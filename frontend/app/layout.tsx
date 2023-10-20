@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className='h-full min-h-screen bg-black'
+        className='h-full min-h-screen bg-gray-50'
       >{children}</body>
     </html>
   )
