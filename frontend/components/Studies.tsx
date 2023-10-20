@@ -1,3 +1,5 @@
+"use client";
+
 const Studies: React.FC = () => {
   return (
     <section>

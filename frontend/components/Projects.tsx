@@ -129,9 +129,9 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   if (screenWidth < responsiveWidthlimit) {
     return (
       <div className='w-full'>
-        <div className="flex flex-col m-3 justify-between items-center rounded-md border-4 border-gray-500 bg-black">
+        <div className="flex flex-col m-3 justify-between items-center rounded-md border-4 border-slate-500 bg-black">
           <div className='flex flex-row'>
-            <div className='flex items-center m-3 border-4 border-gray-500 rounded-md'>
+            <div className='flex items-center m-3 border-4 border-slate-500 rounded-md'>
               <div className='flex items-center m-1'>
                 <Image
                   src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
@@ -153,8 +153,8 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   } else {
     return (
       <div className="flex flex-col m-2.5 justify-between items-center 
-                      rounded-md border-4 border-gray-500 bg-black w-[24rem] h-[36rem] hover:h-full overflow-hidden">
-        <div className='flex items-center m-2.5 ml-5 mt-8  border-4 border-gray-500 rounded-md'>
+                      rounded-md border-4 border-slate-500 bg-black w-[24rem] h-[36rem] hover:h-full overflow-hidden">
+        <div className='flex items-center m-2.5 ml-5 mt-8  border-4 border-slate-500 rounded-md'>
           <div className='flex items-center m-1'>
             <Image
               src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}

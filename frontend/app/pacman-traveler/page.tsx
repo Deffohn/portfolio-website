@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Game from '@/app/pacman-traveler/PacmanTraveler/Game';
 import React from 'react';
 
