@@ -73,7 +73,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
         <div className="flex mx-1.5 my-2.5 items-center justify-center">
           { 
             contentInput.projectDescription &&
-            <a className="text-left text-white no-underline">
+            <a className="text-left text-slate-50 no-underline">
               {contentInput.projectDescription}
             </a>
           }
@@ -105,7 +105,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
 const ProjectTitle: React.FC<{contentInput: ProjectContentInput}> = ({contentInput}) => {
   return (
     <div className="flex mx-4 my-5 items-center justify-center max-w-1/2">
-      <h3 className='text-center text-white no-underline break-words
+      <h3 className='text-center text-slate-50 no-underline break-words
                     text-xl'
       >
         {contentInput.projectName}
@@ -117,7 +117,7 @@ const ProjectTitle: React.FC<{contentInput: ProjectContentInput}> = ({contentInp
 const ProjectSplitter: React.FC = () => {
   return (
     <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-      <hr className='h-0.5 mx-0.8 bg-gray-400 border-none'/>
+      <hr className='h-0.5 mx-0.8 bg-slate-50 border-none'/>
     </div>
   );
 }
@@ -129,10 +129,10 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   if (screenWidth < responsiveWidthlimit) {
     return (
       <div className='w-full'>
-        <div className="flex flex-col m-3 justify-between items-center rounded-md border-4 border-slate-500 bg-black">
+        <div className="flex flex-col m-3 justify-between items-center rounded-md shadow-2xl bg-slate-500">
           <div className='flex flex-row'>
-            <div className='flex items-center m-3 border-4 border-slate-500 rounded-md'>
-              <div className='flex items-center m-1'>
+            <div className='flex items-center m-3 bg-slate-200 shadow-2xl rounded-md'>
+              <div className='flex items-center m-2'>
                 <Image
                   src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
                   alt={contentInput.illustrationPath != null ?
@@ -153,9 +153,9 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   } else {
     return (
       <div className="flex flex-col m-2.5 justify-between items-center 
-                      rounded-md border-4 border-slate-500 bg-black w-[24rem] h-[36rem] hover:h-full overflow-hidden">
-        <div className='flex items-center m-2.5 ml-5 mt-8  border-4 border-slate-500 rounded-md'>
-          <div className='flex items-center m-1'>
+                      rounded-md shadow-2xl bg-slate-500 w-[24rem] h-[36rem] hover:h-full overflow-hidden">
+        <div className='flex items-center m-2.5 ml-5 mt-8 bg-slate-200 shadow-2xl rounded-md'>
+          <div className='flex items-center m-2'>
             <Image
               src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
               alt={contentInput.illustrationPath != null ?
