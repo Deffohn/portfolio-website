@@ -37,7 +37,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
 
           <ProjectSplitter/>
           <div className="flex flex-col mx-2.5 my-2.5 justify-between">
-            <div className="flex mx-1.5 mb-2.5 flex-wrap items-start justify-center">
+            <div className="flex mx-1.5 flex-wrap items-start justify-center">
               {
                 contentInput.projectLinks.map((link: ProjectLink, projectLinkIndex) => {
 
@@ -89,7 +89,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
           contentInput.projectTags.map((tag: string, projectTagIndex) => {
             return (
               <div key={projectTagIndex} className="inline-block align-middle bg-gray-700 rounded ml-1.5 mb-1.5">
-                <a className="flex m-1.5 text-white text-center">
+                <a className="flex m-1.5 text-slate-50 text-center">
                   {tag}
                 </a>
               </div>
