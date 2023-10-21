@@ -153,9 +153,9 @@ const Game = () => {
 
   return (
     <div>
-      <h3 className="text-white">Score: {score}</h3>
-      <div className='flex mx-auto flex-wrap items-center bg-white rounded'>
-        <div className='flex items-center bg-black rounded m-1'>
+      <h3 className="text-black">Score: {score}</h3>
+      <div className='flex mx-auto flex-wrap items-center rounded'>
+        <div className='flex items-center bg-slate-500 rounded m-1 shadow-2xl'>
           <div className="flex items-center m-1 bg-black">
             <canvas className="outline-none"
               ref={canvasRef}
