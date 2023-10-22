@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { generateObstaclesOnChunk } from "./assets/gameAssets";
-import { Direction, MapChunk, Position } from "./mapTypes";
-import { PacmanPlayer } from "./PacmanPlayer";
-import { Obstacle } from "./Obstacle";
-import { GameMap } from "./GameMap";
-import { basicChunkGenerator } from "./generatorAssets/chunkGenerators/basicChunkGenerator";
-import { CogScore } from "./CogScore";
+import { Direction, MapChunk, Position } from "./src/mapTypes";
+import { PacmanPlayer } from "./src/PacmanPlayer";
+import { Obstacle } from "./src/Obstacle";
+import { GameMap } from "./src/GameMap";
+import { basicChunkGenerator } from "./src/generatorAssets/chunkGenerators/basicChunkGenerator";
+import { CogScore } from "./src/CogScore";
 
 const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;

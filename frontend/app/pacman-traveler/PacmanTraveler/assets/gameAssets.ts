@@ -1,6 +1,6 @@
 import { pathBorderWidth } from "../Game";
-import { Obstacle, RectangleObstacle } from "../Obstacle";
-import { MapChunk, MapTile, Position } from "../mapTypes";
+import { Obstacle, RectangleObstacle } from "../src/Obstacle";
+import { MapChunk, MapTile, Position } from "../src/mapTypes";
 
 export const findMapTileByPosition = (position: Position, mapTiles: MapTile[]): MapTile | null => {
   let tile: MapTile | undefined = mapTiles.find(
