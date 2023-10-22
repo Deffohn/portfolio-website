@@ -1,6 +1,6 @@
 import { CogScore } from "../../CogScore";
-import { findMapTileByPosition } from "../../assets/gameAssets";
-import { centerMapPattern } from "../../assets/mapPatterns";
+import { findMapTileByPosition } from "../../../assets/gameAssets";
+import { centerMapPattern } from "../../../assets/mapPatterns";
 import { MapChunk, MapTile, Position } from "../../mapTypes";
 import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection, cogTypes } from "../generatorAssets";
 

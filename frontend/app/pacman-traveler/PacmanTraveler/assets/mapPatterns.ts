@@ -1,4 +1,4 @@
-import { MapTile } from "../mapTypes";
+import { MapTile } from "../src/mapTypes";
 
 export const centerMapPattern: MapTile[] = [
   {
