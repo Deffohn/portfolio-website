@@ -74,6 +74,7 @@ export const basicChunkGenerator = (
         cogScoreChoose.totalFrames,
         cogScoreChoose.pxPeriod,
         cogScoreChoose.ySize,
+        Math.floor(Math.random() * 2) === 0 ? -1 : 1,
         Math.floor(Math.random() * cogScoreChoose.totalFrames),
       ));
     }
