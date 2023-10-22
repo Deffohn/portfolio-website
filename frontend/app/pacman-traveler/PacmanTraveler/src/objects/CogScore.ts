@@ -1,8 +1,9 @@
-import { Position } from "./mapTypes";
+import { CircleHitbox } from "../Hitboxs/CircleHitbox";
+import { Direction } from "../mapTypes";
+import { Obstacle } from "./Obstacle";
 
-export class CogScore implements Position {
-  x: number;
-  y: number;
+export class CogScore implements Obstacle {
+  hitbox: CircleHitbox;
   animatedImage: {
     image: HTMLImageElement,
     totalFrames: number,
@@ -21,8 +22,7 @@ export class CogScore implements Position {
     animationYSize: number,
     stateToBegin: number,
   ) {
-    this.x = x;
-    this.y = y;
+    this.hitbox = new CircleHitbox(x, y, 0.5);
 
     this.animatedImage = {
       image: new Image(),
@@ -35,14 +35,8 @@ export class CogScore implements Position {
 
     this.score = scoring;
   }
-
-  isPacmanColliding(x: number, y: number, pacmanSize: number): boolean {
-    return (
-      x + pacmanSize / 2 > this.x &&
-      x - pacmanSize / 2 < this.x + 1 &&
-      y + pacmanSize / 2 > this.y &&
-      y - pacmanSize / 2 < this.y + 1
-    );
+  move(_direction: Direction, _speed: number, _obstacles: Obstacle[]): void {
+    return;
   }
 
   canvasDraw(
@@ -63,10 +57,10 @@ export class CogScore implements Position {
       this.animatedImage.pxPeriod, this.animatedImage.ySize,
 
       // position on canvas
-      this.x * tileWidthPx - deltaPacmanXPx, this.y * tileHeightPx - deltaPacmanYPx,
+      (this.hitbox.x - 0.5) * tileWidthPx - deltaPacmanXPx, (this.hitbox.y - 0.5) * tileHeightPx - deltaPacmanYPx,
 
       // size on canvas
-      tileWidthPx, tileHeightPx,
+      tileWidthPx * 2 * this.hitbox.radius, tileHeightPx * 2 * this.hitbox.radius,
     );
   }
 
