@@ -80,9 +80,9 @@ export class GameMap {
       let gatherCogScored: Position[] = [];
       chunk.cogScores.forEach(cogScore => {
         if (cogScore === undefined) return;
-        if (cogScore.isPacmanColliding(pacman.x, pacman.y, pacman.size)) {
+        if (cogScore.hitbox.isObjectCrossing(pacman.hitbox)) {
           pacman.increaseScore(cogScore.score);
-          gatherCogScored.push({ x: cogScore.x, y: cogScore.y});
+          gatherCogScored.push({ x: cogScore.hitbox.x, y: cogScore.hitbox.y});
           scoring = true;
         }
       });
@@ -90,7 +90,7 @@ export class GameMap {
       // delete gatherCogScored
       gatherCogScored.forEach(cogScored => {
         chunk.cogScores = chunk.cogScores.filter(cogScore => {
-          return !(cogScore.x === cogScored.x && cogScore.y === cogScored.y);
+          return !(cogScore.hitbox.x === cogScored.x && cogScore.hitbox.y === cogScored.y);
         });
       });
     });

@@ -1,6 +1,6 @@
-import { CogScore } from "../../CogScore";
-import { findMapTileByPosition } from "../../../assets/gameAssets";
-import { centerMapPattern } from "../../../assets/mapPatterns";
+import { CogScore } from "../../objects/CogScore";
+import { findMapTileByPosition } from "../../assets/gameAssets";
+import { centerMapPattern } from "../../assets/mapPatterns";
 import { MapChunk, MapTile, Position } from "../../mapTypes";
 import { Proximity, findMapTileWithUndefinedPath, proximitiesToDirection, cogTypes } from "../generatorAssets";
 
@@ -57,7 +57,7 @@ export const basicChunkGenerator = (
   let cogScores: CogScore[] = [];
   let cogScoreProbability: number = 4 / (chunkWidth * chunkHeight);
   tiles.forEach((tile) => {
-    // first skip tiles in the middle of the map
+    // first skip tiles in the middle of the map (0, 0)
     if (
       tile.x < chunkWidth / 2 + 2 
       && tile.x >= chunkWidth / 2 - 2 
@@ -68,7 +68,7 @@ export const basicChunkGenerator = (
     if (Math.random() < cogScoreProbability) {
       let cogScoreChoose = cogTypes[Math.floor(Math.random() * cogTypes.length)];
       cogScores.push(new CogScore(
-        tile.x, tile.y,
+        tile.x + 0.5, tile.y + 0.5,
         cogScoreChoose.imagePath,
         cogScoreChoose.score,
         cogScoreChoose.totalFrames,

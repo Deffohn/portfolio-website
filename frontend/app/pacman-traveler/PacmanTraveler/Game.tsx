@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { generateObstaclesOnChunk } from "./assets/gameAssets";
+import { generateObstaclesOnChunk } from "./src/assets/gameAssets";
 import { Direction, MapChunk, Position } from "./src/mapTypes";
 import { PacmanPlayer } from "./src/PacmanPlayer";
-import { Obstacle } from "./src/Obstacle";
+import { Obstacle } from "./src/objects/Obstacle";
 import { GameMap } from "./src/GameMap";
 import { basicChunkGenerator } from "./src/generatorAssets/chunkGenerators/basicChunkGenerator";
-import { CogScore } from "./src/CogScore";
+import { CogScore } from "./src/objects/CogScore";
 
 const tileRatioPx = 45;
 const tileWidthPx = tileRatioPx;
@@ -125,8 +125,8 @@ const Game = () => {
     setInterval(() => {
 
       gameMap.refreshChunks({
-        x: pacman.x,
-        y: pacman.y,
+        x: pacman.hitbox.x,
+        y: pacman.hitbox.y,
       });
 
       obstacles = gameMap.mapChunks.map((chunk : MapChunk) => generateObstaclesOnChunk(chunk)).flat();

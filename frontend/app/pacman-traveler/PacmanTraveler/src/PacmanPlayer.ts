@@ -1,10 +1,10 @@
-import { Obstacle } from "./Obstacle";
+import { Obstacle } from "./objects/Obstacle";
 import { Direction, Position } from "./mapTypes";
+import { CircleHitbox } from "./Hitboxs/CircleHitbox";
+import { GameObject } from "./objects/GameObject";
 
-export class PacmanPlayer implements Position {
-  x: number;
-  y: number;
-  size: number;
+export class PacmanPlayer implements GameObject {
+  hitbox: CircleHitbox;
   score: number;
 
   pacmanPlayerImage: HTMLImageElement;
@@ -16,16 +16,14 @@ export class PacmanPlayer implements Position {
     pacmanPlayerImageSrc: string,
     mapChunkWidth: number, mapChunkHeight: number,
   ) {
-    this.x = x;
-    this.y = y;
-    this.size = size;
+    this.hitbox = new CircleHitbox(x, y, size / 2);
 
     this.pacmanPlayerImage = new Image();
     this.pacmanPlayerImage.src = pacmanPlayerImageSrc;
 
     this.pacmanDrawingPosition = {
-      x: mapChunkWidth / 2 - this.size / 2,
-      y: mapChunkHeight / 2 - this.size / 2,
+      x: mapChunkWidth / 2 - this.hitbox.radius,
+      y: mapChunkHeight / 2 - this.hitbox.radius,
     };
 
     this.score = 0;
@@ -45,22 +43,22 @@ export class PacmanPlayer implements Position {
     }
 
     const newPosition: Position = {
-      x: this.x + direction.x * speed,
-      y: this.y + direction.y * speed,
+      x: this.hitbox.x + direction.x * speed,
+      y: this.hitbox.y + direction.y * speed,
     };
 
     let xDoMove = true;
     let yDoMove = true;
     for (let obstacle of obstacles) {
-      if (obstacle.isPacmanInside(newPosition.x, this.y, this.size)) {
+      if (obstacle.hitbox.isObjectCrossing(new CircleHitbox(newPosition.x, this.hitbox.y, this.hitbox.radius))) {
         xDoMove = false;
-      } if (obstacle.isPacmanInside(this.x, newPosition.y, this.size)) {
+      } if (obstacle.hitbox.isObjectCrossing(new CircleHitbox(this.hitbox.x, newPosition.y, this.hitbox.radius))) {
         yDoMove = false;
       }
     }
 
-    if (xDoMove) this.x = newPosition.x;
-    if (yDoMove) this.y = newPosition.y;
+    if (xDoMove) this.hitbox.x = newPosition.x;
+    if (yDoMove) this.hitbox.y = newPosition.y;
 
   }
 
@@ -82,8 +80,8 @@ export class PacmanPlayer implements Position {
       pacmanDrawingPositionPx.y,
 
       // px size on canvas
-      this.size * tileWidthPx,
-      this.size * tileHeightPx,
+      tileWidthPx * 2 * this.hitbox.radius,
+      tileHeightPx * 2 * this.hitbox.radius,
     );
   }
 
@@ -103,8 +101,8 @@ export class PacmanPlayer implements Position {
   ): Position {
     let pacmanDrawingPositionPx: Position = this.getPacmanDrawingPositionPx(tileWidthPx, tileHeightPx);
     return {
-      x: this.x * tileWidthPx - pacmanDrawingPositionPx.x - (this.size * tileWidthPx) / 2,
-      y: this.y * tileHeightPx - pacmanDrawingPositionPx.y - (this.size * tileHeightPx) / 2,
+      x: this.hitbox.x * tileWidthPx - pacmanDrawingPositionPx.x - (this.hitbox.radius * tileWidthPx),
+      y: this.hitbox.y * tileHeightPx - pacmanDrawingPositionPx.y - (this.hitbox.radius * tileHeightPx),
     };
   }
 

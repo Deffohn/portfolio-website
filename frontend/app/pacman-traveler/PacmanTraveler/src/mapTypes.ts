@@ -1,4 +1,4 @@
-import { CogScore } from "./CogScore";
+import { CogScore } from "./objects/CogScore";
 
 export class Direction implements Position {
   x: number;
