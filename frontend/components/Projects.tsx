@@ -131,7 +131,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
       <div className='w-full'>
         <div className="flex flex-col m-3 justify-between items-center rounded-md shadow-2xl bg-slate-500">
           <div className='flex flex-row'>
-            <div className='flex items-center m-3 bg-slate-200 shadow-2xl rounded-md'>
+            <div className='flex items-center m-3 mt-8 bg-slate-200 shadow-2xl rounded-md'>
               <div className='flex items-center m-2'>
                 <Image
                   src={contentInput.illustrationPath != null ? contentInput.illustrationPath : "/projects/default.png"}
@@ -173,7 +173,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
 
 const Projects: React.FC = () => {
 
-  const [screenWidth, setScreenWidth] = useState(0);
+  const [screenWidth, setScreenWidth] = useState(responsiveWidthlimit + 1);
 
   const projects: ProjectContentInput[] = [
     {
