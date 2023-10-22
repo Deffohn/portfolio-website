@@ -9,6 +9,7 @@ export class CogScore implements Obstacle {
     totalFrames: number,
     pxPeriod: number,
     ySize: number,
+    rotationDirection: -1 | 1,
     state: number,
   };
   score: number;
@@ -20,6 +21,7 @@ export class CogScore implements Obstacle {
     animationTotalFrames: number,
     animationPxPeriod: number,
     animationYSize: number,
+    animationRotationDirection: -1 | 1,
     stateToBegin: number,
   ) {
     this.hitbox = new CircleHitbox(x, y, 0.5);
@@ -29,6 +31,7 @@ export class CogScore implements Obstacle {
       totalFrames: animationTotalFrames,
       pxPeriod: animationPxPeriod,
       ySize: animationYSize,
+      rotationDirection: animationRotationDirection,
       state: stateToBegin,
     };
     this.animatedImage.image.src = imageForAnimation;
@@ -45,7 +48,8 @@ export class CogScore implements Obstacle {
     deltaPacmanXPx: number, deltaPacmanYPx: number,
   ) {
     // refresh animation state
-    this.animatedImage.state = (this.animatedImage.state + 1) % this.animatedImage.totalFrames;
+    this.animatedImage.state = (this.animatedImage.state + this.animatedImage.rotationDirection) % this.animatedImage.totalFrames;
+    if (this.animatedImage.state < 0) this.animatedImage.state += this.animatedImage.totalFrames;
 
     ctx.drawImage(
       this.animatedImage.image,
