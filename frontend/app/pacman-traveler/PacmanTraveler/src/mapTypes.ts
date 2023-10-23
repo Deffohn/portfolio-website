@@ -1,4 +1,5 @@
 import { CogScore } from "./objects/CogScore";
+import { Obstacle } from "./objects/Obstacle";
 
 export class Direction implements Position {
   x: number;
@@ -13,6 +14,7 @@ export interface MapChunk {
   tiles: MapTile[],
   position: Position,
   cogScores: CogScore[],
+  obstacles?: Obstacle[],
 }
 
 export enum ManaType {

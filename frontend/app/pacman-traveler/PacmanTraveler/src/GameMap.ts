@@ -1,6 +1,7 @@
 import { MapChunk, MapTile, Position } from "./mapTypes";
 import {chunkTileProximityRectangles} from "./generatorAssets/generatorAssets";
 import { PacmanPlayer } from "./PacmanPlayer";
+import { generateObstaclesOnChunk } from "./assets/gameAssets";
 
 export class GameMap {
   chunkWidth: number;
@@ -139,12 +140,15 @@ export class GameMap {
 
     // then generate them
     newMapChunkPositionsToGenerate.forEach(chunkPosition => {
-      this.mapChunks.push(this.chunkGenerator(
+      let newChunk: MapChunk = this.chunkGenerator(
         chunkPosition,
         this.chunkWidth,
         this.chunkHeight,
         this.findProximityTilesToChunk(chunkPosition),
-      ));
+      );
+
+      newChunk.obstacles = generateObstaclesOnChunk(newChunk);
+      this.mapChunks.push(newChunk);
     });
   }
 
