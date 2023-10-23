@@ -53,11 +53,22 @@ export const basicChunkGenerator = (
     }));
   }
 
+
+  // =====================================================================================================
   // generate cogScores
+
+  // first generate weightedCogTypes
+  let weightedCogTypes: typeof cogTypes = [];
+  cogTypes.forEach((cogType) => {
+    for (let i = 0; i < cogType.probabilityWeight; i++) {
+      weightedCogTypes.push(cogType);
+    }
+  });
+
   let cogScores: CogScore[] = [];
   let cogScoreProbability: number = 4 / (chunkWidth * chunkHeight);
   tiles.forEach((tile) => {
-    // first skip tiles in the middle of the map (0, 0)
+    // first skip tiles around the middle of the map (0, 0) chunk at middle of chunk +- 2 tiles (4 x 4)
     if (
       tile.x < chunkWidth / 2 + 2 
       && tile.x >= chunkWidth / 2 - 2 
@@ -66,9 +77,11 @@ export const basicChunkGenerator = (
     ) return;
 
     if (Math.random() < cogScoreProbability) {
-      let cogScoreChoose = cogTypes[Math.floor(Math.random() * cogTypes.length)];
+      let cogScoreChoose = weightedCogTypes[Math.floor(Math.random() * weightedCogTypes.length)];
       cogScores.push(new CogScore(
         tile.x + 0.5, tile.y + 0.5,
+        cogScoreChoose.hitboxRadius,
+        cogScoreChoose.imageSizeX/2, cogScoreChoose.imageSizeY/2,
         cogScoreChoose.imagePath,
         cogScoreChoose.score,
         cogScoreChoose.totalFrames,
