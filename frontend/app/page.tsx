@@ -3,7 +3,6 @@ import Experiences from "@/components/Experiences";
 import Profile from "@/components/Profile";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
-import Studies from "@/components/Studies";
 
 export default function Home() {
   return (
@@ -17,9 +16,6 @@ export default function Home() {
           </section>
           <section id="experiences">
             <Experiences />
-          </section>
-          <section id="studies">
-            <Studies />
           </section>
         </main>
       </section>

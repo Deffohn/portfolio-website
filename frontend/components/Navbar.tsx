@@ -52,7 +52,7 @@ type NavListItem = {
     title: string
   },
   alt: string,
-}
+};
 
 const navList: NavListItem[] = [
   {
@@ -70,7 +70,7 @@ const navList: NavListItem[] = [
     text: {
       title: "Projects"
     },
-    alt: "Projects"
+    alt: "Projects",
   },
   {
     id: "experiences",
@@ -78,16 +78,8 @@ const navList: NavListItem[] = [
     text: {
       title: "Experiences"
     },
-    alt: "Experiences"
+    alt: "Experiences",
   },
-  {
-    id: "studies",
-    href: "#studies",
-    text: {
-      title: "Studies"
-    },
-    alt: "Studies"
-  }
 ]
 
 export default Navbar;

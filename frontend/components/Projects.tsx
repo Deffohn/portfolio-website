@@ -153,7 +153,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   } else {
     return (
       <div className="flex flex-col m-2.5 justify-between items-center 
-                      rounded-md shadow-2xl bg-slate-500 w-[24rem] h-[36rem] hover:h-full overflow-hidden">
+                      rounded-md shadow-2xl bg-slate-500 w-[24rem] h-[36rem] hover:min-h-[36rem] hover:h-full overflow-hidden">
         <div className='flex items-center m-2.5 ml-5 mt-8 bg-slate-200 shadow-2xl rounded-md'>
           <div className='flex items-center m-2'>
             <Image
@@ -196,7 +196,7 @@ const Projects: React.FC = () => {
         {
           link: "https://github.com/Deffohn/portfolio-website",
           linkName: "Github Repository",
-          illustrationPath: "github.png"
+          illustrationPath: "github.png",
         },
       ]
     },
@@ -221,8 +221,29 @@ const Projects: React.FC = () => {
         {
           link: "https://github.com/Deffohn/portfolio-website/tree/main/frontend/app/pacman-traveler",
           linkName: "Github Repository path",
-          illustrationPath: "github.png"
+          illustrationPath: "github.png",
         },
+      ],
+    },
+    {
+      illustrationPath: "/projects/devexpert-platform.png",
+      projectName: "DevExpert Platform",
+      projectDescription: "DevExpert Platform is a collaborative student project with @vecil and @zuxaw back in early 2022 during our M1 at ISEN Toulon.\n"+
+                          "This project was to help user directly meet with experts in various dev skills, with the ability to rank and to add a tip to the expert if the user was satisfied with the help.\n"+
+                          "My main task was to implement both ranking and matching algorithms and microservices as a Flask API, supported by a mongoDB database.",
+      projectTags: [
+        "Python",
+        "Flask",
+        "Microservices",
+        "Backend",
+        "Mathematics",
+        "Algorithm",
+        "React",
+        "Typescript",
+        "MongoDB",
+        "Terraform",
+        "GCP",
+        "Skaffolder",
       ],
     },
   ];
