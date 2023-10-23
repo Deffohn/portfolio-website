@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 import { useEffect, useRef, useState } from "react";
 import { generateObstaclesOnChunk } from "./src/assets/gameAssets";
 import { Direction, MapChunk, Position } from "./src/mapTypes";
@@ -31,47 +32,100 @@ const pressedKeys = {
   arrowRight: false,
 };
 
-const handleKeyDown = (e: { key: string; }) => {
-  // console.log(e.key);
-
-  if (e.key === 'w') {
-    pressedKeys.arrowUp = true;
-  } if (e.key === 's') {
-    pressedKeys.arrowDown = true;
-  } if (e.key === 'a') {
-    pressedKeys.arrowLeft = true;
-  } if (e.key === 'd') {
-    pressedKeys.arrowRight = true;
-  }
+type KeyboardSetting = {
+  name: string,
+  toolTipKeyInfo: string,
+  left: string,
+  up: string,
+  right: string,
+  down: string,
 }
 
-const handleKeyUp = (e: { key: string; }) => {
-  // console.log(e.key);
+const keyboardSettings: KeyboardSetting[] = [
+  {
+    name: 'QWERTY',
+    toolTipKeyInfo : "WASD",
+    left: 'a',
+    up: 'w',
+    right: 'd',
+    down: 's',
+  },
+  {
+    name: 'AZERTY',
+    toolTipKeyInfo : "ZQSD",
+    left: 'q',
+    up: 'z',
+    right: 'd',
+    down: 's',
+  },
+];
 
-  if (e.key === 'w') {
-    pressedKeys.arrowUp = false;
-  } if (e.key === 's') {
-    pressedKeys.arrowDown = false;
-  } if (e.key === 'a') {
-    pressedKeys.arrowLeft = false;
-  } if (e.key === 'd') {
-    pressedKeys.arrowRight = false;
-  }
+type GameProps = {
+  onTextChange: (text: string) => void;
 }
 
-const Game = () => {
+const Game: React.FC<GameProps> = ({onTextChange}) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [score, setScore] = useState(0);
+  const [keyboardSetting, setKeyboardSetting] = useState(keyboardSettings[0]);
+  const [nextKeyboardSetting, setNextKeyboardSetting] = useState(keyboardSettings[1]);
+
+  const refreshKeyboardEventListeners = (oldSetting: KeyboardSetting, newSetting: KeyboardSetting) => {
+    window.removeEventListener('keydown', (event) => handleKeyDown(event, oldSetting));
+    window.removeEventListener('keyup', (event) => handleKeyUp(event, oldSetting));
+    window.addEventListener('keydown', (event) => handleKeyDown(event, newSetting));
+    window.addEventListener('keyup', (event) => handleKeyUp(event, newSetting));
+  }
+
+  const switchKeyboardSetting = () => {
+    if (keyboardSetting.name === 'QWERTY') {
+      setKeyboardSetting(keyboardSettings[1]);
+      setNextKeyboardSetting(keyboardSettings[0]);
+      onTextChange(keyboardSettings[1].toolTipKeyInfo);
+      refreshKeyboardEventListeners(keyboardSettings[0], keyboardSettings[1]);
+    } else {
+      setKeyboardSetting(keyboardSettings[0]);
+      setNextKeyboardSetting(keyboardSettings[1]);
+      onTextChange(keyboardSettings[0].toolTipKeyInfo);
+      refreshKeyboardEventListeners(keyboardSettings[1], keyboardSettings[0]);
+    }
+  }
+
+  const handleKeyDown = (e: { key: string; }, keyboardSetting: KeyboardSetting) => {
+  
+    if (e.key === keyboardSetting.up) {
+      pressedKeys.arrowUp = true;
+    } if (e.key === keyboardSetting.down) {
+      pressedKeys.arrowDown = true;
+    } if (e.key === keyboardSetting.left) {
+      pressedKeys.arrowLeft = true;
+    } if (e.key === keyboardSetting.right) {
+      pressedKeys.arrowRight = true;
+    }
+  }
+  
+  const handleKeyUp = (e: { key: string; }, keyboardSetting: KeyboardSetting) => {
+  
+    if (e.key === keyboardSetting.up) {
+      pressedKeys.arrowUp = false;
+    } if (e.key === keyboardSetting.down) {
+      pressedKeys.arrowDown = false;
+    } if (e.key === keyboardSetting.left) {
+      pressedKeys.arrowLeft = false;
+    } if (e.key === keyboardSetting.right) {
+      pressedKeys.arrowRight = false;
+    }
+  }
 
   useEffect(() => {
     // Add event listeners for keydown and keyup events
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('keydown', (event) => handleKeyDown(event, keyboardSetting));
+    window.addEventListener('keyup', (event) => handleKeyUp(event, keyboardSetting));
 
     // Clean up event listeners when the component unmounts
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('keydown', (event) => handleKeyDown(event, keyboardSetting));
+      window.removeEventListener('keyup', (event) => handleKeyUp(event, keyboardSetting));
     };
   }, []);
 
@@ -153,7 +207,12 @@ const Game = () => {
 
   return (
     <div>
-      <h3 className="text-black">Score: {score}</h3>
+      <div className="flex flex-row gap-2 item-center justify-between">
+        <h3 className="text-black m-1">Score: {score}</h3>
+        <div className='rounded-sm bg-slate-200'>
+          <button className='m-1' onClick={switchKeyboardSetting}>Switch to {nextKeyboardSetting.name}</button>
+        </div>
+      </div>
       <div className='flex mx-auto flex-wrap items-center rounded'>
         <div className='flex items-center bg-slate-500 rounded m-1 shadow-2xl'>
           <div className="flex items-center m-1 bg-black">

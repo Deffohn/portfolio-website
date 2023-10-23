@@ -3,6 +3,12 @@ import Game from '@/app/pacman-traveler/PacmanTraveler/Game';
 import React from 'react';
 
 const PacmanTraveler = () => {
+  const [keyboardSettingToolTip, setKeyboardSettingToolTip] = React.useState('WASD');
+
+  const handleKeyboardSettingToolTipChange = (newKeyboardSettingName: string) => {
+    setKeyboardSettingToolTip(newKeyboardSettingName);
+  }
+
   return (
     <html lang="en">
       <head>
@@ -18,11 +24,11 @@ const PacmanTraveler = () => {
           </h1>
           <h2 className='flex mx-auto flex-wrap text-black text-center mb-4 text-lg'>
             This is a game experiment for displaying terrain generation algorithms.
-            Use WASD to move as Pacman. Only playable with a computer keyboard.
+            Use {keyboardSettingToolTip} to move as Pacman. Only playable with a computer keyboard.
           </h2>
           <div className='flex mx-auto flex-wrap items-center'>
             <div className='flex'>
-              <Game/>
+              <Game onTextChange={handleKeyboardSettingToolTipChange}/>
             </div>
           </div>
         </div>
