@@ -183,7 +183,7 @@ const Game: React.FC<GameProps> = ({onTextChange}) => {
         y: pacman.hitbox.y,
       });
 
-      obstacles = gameMap.mapChunks.map((chunk : MapChunk) => generateObstaclesOnChunk(chunk)).flat();
+      obstacles = gameMap.mapChunks.map((chunk : MapChunk) => chunk.obstacles!).flat();
 
       // TODO handle multiple keys pressed at once
       let direction: Direction = new Direction(0, 0);
