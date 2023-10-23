@@ -12,10 +12,15 @@ export class CogScore implements Obstacle {
     rotationDirection: -1 | 1,
     state: number,
   };
+  imageSizeX: number;
+  imageSizeY: number;
+
   score: number;
 
   constructor(
     x: number, y: number,
+    hitboxRadius: number,
+    imageSizeX: number, imageSizeY: number,
     imageForAnimation: string,
     scoring: number,
     animationTotalFrames: number,
@@ -24,7 +29,7 @@ export class CogScore implements Obstacle {
     animationRotationDirection: -1 | 1,
     stateToBegin: number,
   ) {
-    this.hitbox = new CircleHitbox(x, y, 0.5);
+    this.hitbox = new CircleHitbox(x, y, hitboxRadius);
 
     this.animatedImage = {
       image: new Image(),
@@ -35,6 +40,9 @@ export class CogScore implements Obstacle {
       state: stateToBegin,
     };
     this.animatedImage.image.src = imageForAnimation;
+
+    this.imageSizeX = imageSizeX;
+    this.imageSizeY = imageSizeY;
 
     this.score = scoring;
   }
@@ -61,10 +69,10 @@ export class CogScore implements Obstacle {
       this.animatedImage.pxPeriod, this.animatedImage.ySize,
 
       // position on canvas
-      (this.hitbox.x - 0.5) * tileWidthPx - deltaPacmanXPx, (this.hitbox.y - 0.5) * tileHeightPx - deltaPacmanYPx,
+      (this.hitbox.x - this.imageSizeX) * tileWidthPx - deltaPacmanXPx, (this.hitbox.y - this.imageSizeY) * tileHeightPx - deltaPacmanYPx,
 
       // size on canvas
-      tileWidthPx * 2 * this.hitbox.radius, tileHeightPx * 2 * this.hitbox.radius,
+      tileWidthPx * 2 * this.imageSizeX, tileHeightPx * 2 * this.imageSizeY,
     );
   }
 
