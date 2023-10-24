@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
 import { useEffect, useRef, useState } from "react";
-import { generateObstaclesOnChunk } from "./src/assets/gameAssets";
 import { Direction, MapChunk, Position } from "./src/mapTypes";
 import { PacmanPlayer } from "./src/PacmanPlayer";
 import { Obstacle } from "./src/objects/Obstacle";

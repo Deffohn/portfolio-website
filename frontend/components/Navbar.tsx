@@ -42,8 +42,8 @@ const Navbar: React.FC = () => {
           <nav>
             <div className='ml-4 flex flex-col items-center'>
               {navList.map((navItem) => (
-                <div className='flex items-center'>
-                  <NavbarSectionItem key={navItem.id} navItem={navItem}/>
+                <div key={navItem.id} className='flex items-center'>
+                  <NavbarSectionItem navItem={navItem}/>
                 </div>
               ))}
             </div>
