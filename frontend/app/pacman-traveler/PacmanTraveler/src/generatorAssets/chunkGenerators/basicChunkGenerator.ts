@@ -78,17 +78,28 @@ export const basicChunkGenerator = (
 
     if (Math.random() < cogScoreProbability) {
       let cogScoreChoose = weightedCogTypes[Math.floor(Math.random() * weightedCogTypes.length)];
+      let image = new Image();
+      image.src = cogScoreChoose.imagePath;
       cogScores.push(new CogScore(
         tile.x + 0.5, tile.y + 0.5,
         cogScoreChoose.hitboxRadius,
-        cogScoreChoose.imageSizeX/2, cogScoreChoose.imageSizeY/2,
-        cogScoreChoose.imagePath,
+        {
+          pxWidth: cogScoreChoose.pxPeriod,
+          pxHeight: cogScoreChoose.ySize,
+          image: image,
+          imageSizeX: cogScoreChoose.imageSizeX/2, imageSizeY: cogScoreChoose.imageSizeY/2,
+          animationSettings: {
+            totalFrames: cogScoreChoose.totalFrames,
+            rotationDirection: Math.floor(Math.random() * 2) === 0 ? -1 : 1,
+            state: Math.floor(Math.random() * cogScoreChoose.totalFrames),
+          },
+          orientationSettings: {
+            totalCycleAngle: 360,
+            periodAngle: 360,
+            state: 0,
+          },
+        },
         cogScoreChoose.score,
-        cogScoreChoose.totalFrames,
-        cogScoreChoose.pxPeriod,
-        cogScoreChoose.ySize,
-        Math.floor(Math.random() * 2) === 0 ? -1 : 1,
-        Math.floor(Math.random() * cogScoreChoose.totalFrames),
       ));
     }
   });
