@@ -1,6 +1,6 @@
 export type animationSettings = {
   totalFrames: number,
-  rotationDirection: -1 | 1,
+  animationDirection: -1 | 1,
   state: number,
 }
 

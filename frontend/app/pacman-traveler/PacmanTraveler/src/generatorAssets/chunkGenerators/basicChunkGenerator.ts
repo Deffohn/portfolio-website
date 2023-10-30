@@ -90,7 +90,7 @@ export const basicChunkGenerator = (
           imageSizeX: cogScoreChoose.imageSizeX/2, imageSizeY: cogScoreChoose.imageSizeY/2,
           animationSettings: {
             totalFrames: cogScoreChoose.totalFrames,
-            rotationDirection: Math.floor(Math.random() * 2) === 0 ? -1 : 1,
+            animationDirection: Math.floor(Math.random() * 2) === 0 ? -1 : 1,
             state: Math.floor(Math.random() * cogScoreChoose.totalFrames),
           },
           orientationSettings: {

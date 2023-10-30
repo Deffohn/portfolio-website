@@ -1,13 +1,11 @@
 import { Obstacle } from "./objects/Obstacle";
 import { Direction, Position } from "./mapTypes";
 import { CircleHitbox } from "./Hitboxs/CircleHitbox";
-import { GameObject } from "./objects/GameObject";
+import { DrawableObject } from "./objects/DrawableObject";
 
-export class PacmanPlayer implements GameObject {
-  hitbox: CircleHitbox;
+export class PacmanPlayer extends DrawableObject<CircleHitbox> {
   score: number;
 
-  pacmanPlayerImage: HTMLImageElement;
   pacmanDrawingPosition: Position;
 
   constructor(
@@ -16,10 +14,30 @@ export class PacmanPlayer implements GameObject {
     pacmanPlayerImageSrc: string,
     mapChunkWidth: number, mapChunkHeight: number,
   ) {
-    this.hitbox = new CircleHitbox(x, y, size / 2);
 
-    this.pacmanPlayerImage = new Image();
-    this.pacmanPlayerImage.src = pacmanPlayerImageSrc;
+    let pacmanPlayerImage = new Image();
+    pacmanPlayerImage.src = pacmanPlayerImageSrc;
+
+    super(
+      new CircleHitbox(x, y, size / 2),
+      {
+        image: pacmanPlayerImage,
+        pxWidth: 128,
+        pxHeight: 128,
+        imageSizeX: size / 2,
+        imageSizeY: size / 2,
+        animationSettings: {
+          state: 0,
+          totalFrames: 4,
+          animationDirection: 1,
+        },
+        orientationSettings: {
+          state: 0,
+          totalCycleAngle: 360,
+          periodAngle: 90,
+        },
+      },
+    );
 
     this.pacmanDrawingPosition = {
       x: mapChunkWidth / 2 - this.hitbox.radius,
@@ -34,6 +52,8 @@ export class PacmanPlayer implements GameObject {
   }
 
   move(direction: Direction, speed: number, obstacles: Obstacle[]): void {
+
+    super.move(direction, speed, obstacles);
 
     // normalize direction vector
     let magnitude = Math.sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -65,23 +85,46 @@ export class PacmanPlayer implements GameObject {
   canvasDraw(
     ctx: CanvasRenderingContext2D,
     tileWidthPx: number, tileHeightPx: number,
-
   ): void {
 
     let pacmanDrawingPositionPx: Position = this.getPacmanDrawingPositionPx(
       tileWidthPx,
       tileHeightPx,
     );
+
+    this.refreshAnimationState();
+
     ctx.drawImage(
-      this.pacmanPlayerImage,
+      this.orientedSpriteImageSettings.image,
+
+      // position in image
+      //
+        this.orientedSpriteImageSettings.animationSettings.state
+      * this.orientedSpriteImageSettings.pxWidth,
+      //
+      Math.floor(
+        this.orientedSpriteImageSettings.orientationSettings.state
+      / this.orientedSpriteImageSettings.orientationSettings.periodAngle
+      )
+      * this.orientedSpriteImageSettings.pxHeight,
+      //
+
+      // size in image
+      this.orientedSpriteImageSettings.pxWidth,
+      this.orientedSpriteImageSettings.pxHeight,
 
       // position on canvas
+      //
       pacmanDrawingPositionPx.x,
       pacmanDrawingPositionPx.y,
+      //
 
-      // px size on canvas
-      tileWidthPx * 2 * this.hitbox.radius,
-      tileHeightPx * 2 * this.hitbox.radius,
+      // size on canvas
+      //
+      tileWidthPx * 2 * this.orientedSpriteImageSettings.imageSizeX,
+      //
+      tileHeightPx * 2 * this.orientedSpriteImageSettings.imageSizeY,
+      //
     );
   }
 

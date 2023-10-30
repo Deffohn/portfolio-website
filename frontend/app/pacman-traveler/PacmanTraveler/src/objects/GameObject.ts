@@ -1,5 +1,5 @@
 import { Hitbox } from "../Hitboxs/Hitbox";
-import { Direction } from "../mapTypes";
+import { Direction, Position } from "../mapTypes";
 import { Obstacle } from "./Obstacle";
 
 export interface GameObject {
@@ -8,6 +8,6 @@ export interface GameObject {
   canvasDraw(
     ctx: CanvasRenderingContext2D,
     tileWidthPx: number, tileHeightPx: number,
-    deltaPacmanXPx: number, deltaPacmanYPx: number
+    deltaPacmanXPx: number, deltaPacmanYPx: number,
   ): void;
 }
