@@ -8,12 +8,12 @@ import { GameMap } from "./src/GameMap";
 import { basicChunkGenerator } from "./src/generatorAssets/chunkGenerators/basicChunkGenerator";
 import { CogScore } from "./src/objects/CogScore";
 
-const tileRatioPx = 45;
+const tileRatioPx = 64;
 const tileWidthPx = tileRatioPx;
 const tileHeightPx = tileRatioPx;
 
-const mapChunkWidth = 12;
-const mapChunkHeight = 12;
+const mapChunkWidth = 10;
+const mapChunkHeight = 10;
 const mapWidthInChunks: number = 3
 const mapHeightInChunks: number = 3
 

@@ -1,6 +1,6 @@
 import { Hitbox } from "../Hitboxs/Hitbox";
 import { RectangleHitbox } from "../Hitboxs/RectangleHitbox";
-import { Direction } from "../mapTypes";
+import { Direction, Position } from "../mapTypes";
 import { Obstacle } from "./Obstacle";
 
 export class RectangleTileBorder implements Obstacle {
@@ -17,7 +17,7 @@ export class RectangleTileBorder implements Obstacle {
   canvasDraw(
     ctx: CanvasRenderingContext2D,
     tileWidthPx: number, tileHeightPx: number,
-    deltaPacmanXPx: number, deltaPacmanYPx: number
+    deltaPacmanXPx: number, deltaPacmanYPx: number,
   ) {
 
     ctx.fillStyle = "yellow";

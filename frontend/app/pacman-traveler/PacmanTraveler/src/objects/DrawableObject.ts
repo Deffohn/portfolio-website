@@ -1,6 +1,6 @@
 import { Hitbox } from "../Hitboxs/Hitbox";
 import { orientedSpriteImageSettings } from "../assets/animatedAssets";
-import { Direction } from "../mapTypes";
+import { Direction, Position } from "../mapTypes";
 import { GameObject } from "./GameObject";
 import { Obstacle } from "./Obstacle";
 
@@ -15,18 +15,32 @@ export class DrawableObject<ObjectHitboxClass extends Hitbox> implements GameObj
     this.hitbox = hitbox;
     this.orientedSpriteImageSettings = orientedSpriteImageSettings;
   }
-  move(_direction: Direction, _speed: number, _obstacles: Obstacle[]): void {
+  move(direction: Direction, _speed: number, _obstacles: Obstacle[]): void {
+    let newOrientation: number = Math.atan2(direction.y, direction.x) * 180 / Math.PI;
+    if (newOrientation < 0) newOrientation += 360;
+    this.refreshOrientationState(newOrientation);
+
     return;
   }
 
   refreshAnimationState(/*add frequency parameters*/): void {
     this.orientedSpriteImageSettings.animationSettings.state = 
       ( this.orientedSpriteImageSettings.animationSettings.state
-      + this.orientedSpriteImageSettings.animationSettings.rotationDirection )
+      + this.orientedSpriteImageSettings.animationSettings.animationDirection )
       % this.orientedSpriteImageSettings.animationSettings.totalFrames;
     if (this.orientedSpriteImageSettings.animationSettings.state < 0)
       this.orientedSpriteImageSettings.animationSettings.state
       += this.orientedSpriteImageSettings.animationSettings.totalFrames;
+  }
+
+  refreshOrientationState(newAngle: number): void {
+    let newState: number = Math.floor(
+      newAngle
+      / this.orientedSpriteImageSettings.orientationSettings.periodAngle
+    )
+    * this.orientedSpriteImageSettings.orientationSettings.periodAngle;
+
+    this.orientedSpriteImageSettings.orientationSettings.state = newState;
   }
 
   canvasDraw(
@@ -44,7 +58,11 @@ export class DrawableObject<ObjectHitboxClass extends Hitbox> implements GameObj
         this.orientedSpriteImageSettings.animationSettings.state
       * this.orientedSpriteImageSettings.pxWidth,
       //
-        0,
+      Math.floor(
+        this.orientedSpriteImageSettings.orientationSettings.state
+      / this.orientedSpriteImageSettings.orientationSettings.periodAngle
+      )
+      * this.orientedSpriteImageSettings.pxHeight,
       //
 
       // size in image
