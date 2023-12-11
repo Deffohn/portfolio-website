@@ -2,6 +2,7 @@
 import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { SectionTitle } from './SectionTitle';
 
 const responsiveWidthlimit: number = 850;
 
@@ -258,7 +259,7 @@ const Projects: React.FC = () => {
   if (screenWidth < responsiveWidthlimit) {
     return (
       <div>
-        <h2 className='text-3xl font-bold ml-2'>Projects</h2>
+        <SectionTitle title='Projects'/>
         
         <div className="flex flex-col items-center justify-between">
           {projects.map((project, index) => {
@@ -276,8 +277,8 @@ const Projects: React.FC = () => {
   } else {
     return (
       <div>
-        <h2 className='text-3xl font-bold ml-2'>Projects</h2>
-        <div className="flex flex-wrap">
+        <SectionTitle title='Projects'/>
+        <div className="flex flex-wrap justify-center">
           {projects.map((project, index) => {
             return (
               <ProjectComponent
