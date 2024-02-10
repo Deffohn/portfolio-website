@@ -6,19 +6,21 @@ import Projects from "@/components/Projects";
 
 export default function Home() {
   return (
-    <div className='flex flex-col gap-2 text-black'>
+    <div>
       <Navbar />
-      <Profile />
-      <section>
-        <main>
+      <div className="grid grid-cols-5">
+        <div />
+        <div className='col-span-3 flex flex-col gap-6 text-black'>
+          <Profile />
           <section id="projects">
             <Projects />
           </section>
           <section id="experiences">
             <Experiences />
           </section>
-        </main>
-      </section>
+        </div>
+        <div />
+      </div>
     </div>
   );
 }

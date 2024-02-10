@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { SectionTitle } from "./SectionTitle";
 import Image from 'next/image';
+import { motion } from "framer-motion";
 
 type Experience = {
   name: string;
@@ -22,20 +23,9 @@ const ExperienceHeaderDetails: React.FC<{screenWidth: number, experience: Experi
   {screenWidth, experience}
 ) => {
   return (
-    <div className={(screenWidth < responsiveWidthlimit)?
-      "flex flex-col justify-start text-left gap-2 ml-2.5" : "flex flex-col justify-start text-left gap-2 mt-5 ml-2.5"
-    }>
+    <div className="flex flex-col justify-start text-left gap-2 ml-2.5">
       <p className="text-slate-50 no-underline break-words text-2xl">{experience.name}</p>
       <p className="flex-grow text-slate-50 no-underline break-words text-xl">at <a className="font-semibold" href={experience.url}> {experience.at}</a>, {experience.location}</p>
-      <div className="flex flex-row gap-2 justify-end mr-4 mb-1 mt-auto">
-        <p className="text-slate-50 no-underline break-words text-l">
-          Started: {experience.startDate.getFullYear()}/{experience.startDate.getMonth()}
-        </p>
-        {experience.endDate &&
-        <p className="text-slate-50 no-underline break-words text-l">
-          Ended: {experience.endDate.getFullYear()}/{experience.endDate.getMonth()}
-        </p>}
-      </div>
     </div>
   )
 };
@@ -46,9 +36,20 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
   if (screenWidth < responsiveWidthlimit) {
     return (
       <div className="bg-slate-300 mx-4 mt-2 rounded-md shadow-2xl">
-        <div className="flex flex-1 flex-col gap-2 bg-slate-500 rounded-md m-2.5">
-          <Image className="m-2.5 max-w-[8rem] max-h-[8rem] rounded-md" src={experience.icon? experience.icon : "experiences/default.png"} alt="Experience logo" width={150} height={150} />
-          <ExperienceHeaderDetails screenWidth={screenWidth} experience={experience}/>
+        <div className="flex flex-col gap-2 bg-slate-500 rounded-md m-2.5">
+          <div className="flex flex-1 flex-row">
+            <Image className="m-2.5 max-w-[8rem] max-h-[8rem] rounded-md" src={experience.icon? experience.icon : "experiences/default.png"} alt="Experience logo" width={150} height={150} />
+            <ExperienceHeaderDetails screenWidth={screenWidth} experience={experience}/>
+          </div>
+          <div className="flex flex-row-reverse gap-2 mx-2 mb-1">
+            {experience.endDate &&
+            <p className="text-slate-50 no-underline break-words">
+              Ended: {experience.endDate.getFullYear()}/{experience.endDate.getMonth()}
+            </p>}
+            <p className="text-slate-50 no-underline break-words">
+              Started: {experience.startDate.getFullYear()}/{experience.startDate.getMonth()}
+            </p>
+          </div>
         </div>
         <p className="m-4 text-black no-underline break-words text-xl">
           {experience.description}
@@ -77,11 +78,26 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
     
   }
   return (
-    <div className="overflow-hidden w-[36rem] h-[36rem] hover:min-h-[36rem] hover:h-full bg-slate-300 mx-4 mt-2 rounded-md shadow-2xl">
-      <div className="flex flex-1 flex-col m-2.5">
-        <div className="max-h-[20rem] flex flex-row gap-2 bg-slate-500 rounded-md">
-          <Image className="m-2.5 max-w-[8rem] max-h-[8rem] rounded-md" src={experience.icon? experience.icon : "experiences/default.png"} alt="Experience logo" width={150} height={150} />
-          <ExperienceHeaderDetails screenWidth={screenWidth} experience={experience}/>
+    <motion.div className="overflow-hidden bg-slate-300 rounded-md shadow-2xl m-2.5"
+                initial={{ height: "36rem", minHeight: "36rem" }}
+                whileHover={{ opacity: 1, height: "auto", minHeight: "36rem"}}
+                transition={{ duration: 0.5 }}
+    >
+      <div className="flex flex-1 flex-col gap-2 m-2.5">
+        <div className="flex flex-col bg-slate-500 rounded-md m-2.5">
+          <div className="flex flex-wrap">
+            <Image className="m-2.5 max-w-[6rem] max-h-[6rem] rounded-md" src={experience.icon? experience.icon : "experiences/default.png"} alt="Experience logo" width={150} height={150} />
+            <ExperienceHeaderDetails screenWidth={screenWidth} experience={experience}/>
+          </div>
+          <div className="flex flex-row-reverse gap-2 mx-2 mb-1">
+            {experience.endDate &&
+            <p className="text-slate-50 no-underline break-words">
+              Ended: {experience.endDate.getFullYear()}/{experience.endDate.getMonth()}
+            </p>}
+            <p className="text-slate-50 no-underline break-words">
+              Started: {experience.startDate.getFullYear()}/{experience.startDate.getMonth()}
+            </p>
+          </div>
         </div>
         <div className="shrink-0">
           <p className="m-4 text-black no-underline break-words text-xl">
@@ -108,7 +124,7 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
           </div>
         }
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -136,7 +152,7 @@ const Experiences: React.FC = () => {
     },
     {
       name: "Software Engineering / Computer Science Student",
-      description: "Computer Science and eletronics basics studies, with a deep and very fruitful specialization in software and cloud engineering.\n"+
+      description: "Computer Science and electronics basics studies, with a deep and very fruitful specialization in software and cloud engineering.\n"+
       "With strong fundation in the main programmation languages, this formation offered me a good tour of old and new ways to design, "+
       "upgrade and maintain industrial or public scale software and websites, through the Dev(Sec)Ops perspective with rich interventions and practices in Docker/Kubernetes matter, "+
       "also with deep introduction to multiple public cloud providers with AWS, IBM and GCP clouds.\n",
@@ -189,7 +205,7 @@ const Experiences: React.FC = () => {
           })
         
         }
-      </div> : <div className="grid grid-cols-3 gap-4 m-2">
+      </div> : <div className="grid grid-cols-3 m-2">
         {
           experiences.map((experience: Experience, experienceIndex) => {
             return (

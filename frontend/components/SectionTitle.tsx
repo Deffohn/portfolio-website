@@ -4,8 +4,8 @@ export interface SectionTitleProps {
 
 export const SectionTitle = ({title}: SectionTitleProps) => {
   return (
-    <div className="my-2 shadow-xl
-                    border-y-2 border-slate-500
+    <div className="shadow-xl
+                    border-2 border-slate-500 rounded-md
                     bg-slate-300 mb-5
                     flex flex-row justify-between
     ">

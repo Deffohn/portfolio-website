@@ -3,6 +3,7 @@ import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { SectionTitle } from './SectionTitle';
+import { motion } from 'framer-motion';
 
 const responsiveWidthlimit: number = 850;
 
@@ -153,8 +154,12 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
     );
   } else {
     return (
-      <div className="flex flex-col m-2.5 justify-between items-center 
-                      rounded-md shadow-2xl bg-slate-500 w-[24rem] h-[36rem] hover:min-h-[36rem] hover:h-full overflow-hidden">
+      <motion.div className="flex flex-col m-2.5 justify-between items-center 
+                    rounded-md shadow-2xl bg-slate-500 overflow-hidden"
+                  initial={{ height: "36rem", minHeight: "36rem" }}
+                  whileHover={{ opacity: 1, height: "auto", minHeight: "36rem"}}
+                  transition={{ duration: 0.5 }}
+      >
         <div className='flex items-center m-2.5 ml-5 mt-8 bg-slate-200 shadow-2xl rounded-md'>
           <div className='flex items-center m-2'>
             <Image
@@ -167,7 +172,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
           </div>
         </div>
         <ProjectDetailsContent contentInput={contentInput} screenWidth={screenWidth}/>
-      </div>
+      </motion.div>
     );
   }
 };
@@ -278,7 +283,7 @@ const Projects: React.FC = () => {
     return (
       <div>
         <SectionTitle title='Projects'/>
-        <div className="flex flex-wrap justify-center">
+        <div className="grid grid-cols-3">
           {projects.map((project, index) => {
             return (
               <ProjectComponent
