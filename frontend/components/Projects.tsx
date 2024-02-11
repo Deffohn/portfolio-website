@@ -2,7 +2,7 @@ import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
 import { SectionTitle } from './SectionTitle';
 import { motion } from 'framer-motion';
-import { RESPONSIVE_WIDTH_LIMIT } from '@/app/page';
+import { RESPONSIVE_WIDTH_LIMIT } from '@/app/defines';
 
 type ProjectLink = {
   link: string,

@@ -4,8 +4,7 @@ import Profile from "@/components/Profile";
 import Navbar from "@/components/Navbar";
 import Projects from "@/components/Projects";
 import { useEffect, useState } from "react";
-
-export const RESPONSIVE_WIDTH_LIMIT: number = 1050;
+import { RESPONSIVE_WIDTH_LIMIT } from "./defines";
 
 export default function Home() {
 
