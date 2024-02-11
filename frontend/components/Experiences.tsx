@@ -1,9 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import { SectionTitle } from "./SectionTitle";
 import Image from 'next/image';
 import { motion } from "framer-motion";
+import { RESPONSIVE_WIDTH_LIMIT } from "@/app/page";
 
 type Experience = {
   name: string;
@@ -16,8 +14,6 @@ type Experience = {
   icon?: string;
   url?: string;
 };
-
-const responsiveWidthlimit: number = 850;
 
 const ExperienceHeaderDetails: React.FC<{screenWidth: number, experience: Experience}> = (
   {screenWidth, experience}
@@ -33,7 +29,7 @@ const ExperienceHeaderDetails: React.FC<{screenWidth: number, experience: Experi
 const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> = (
   {screenWidth, experience}
 ) => {
-  if (screenWidth < responsiveWidthlimit) {
+  if (screenWidth < RESPONSIVE_WIDTH_LIMIT) {
     return (
       <div className="bg-slate-300 mx-4 mt-2 rounded-md shadow-2xl">
         <div className="flex flex-col gap-2 bg-slate-500 rounded-md m-2.5">
@@ -57,13 +53,13 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
         { /* {project tags} */
           experience.skillsTought?.length != 0 &&
 
-          <div className={(screenWidth < responsiveWidthlimit ? 'justify-between mb-2.5 flex flex-wrap' 
+          <div className={(screenWidth < RESPONSIVE_WIDTH_LIMIT ? 'justify-between mb-2.5 flex flex-wrap' 
           : 'justify-between mb-2.5 flex-nowrap' 
           )}>
           {
             experience.skillsTought.map((tag: string, experienceTagIndex) => {
               return (
-                <div key={experienceTagIndex} className="inline-block align-middle bg-slate-500 rounded ml-1.5 mb-1.5">
+                <div key={experienceTagIndex} className="inline-block align-middle bg-slate-500 rounded mx-1.5 mb-1.5">
                   <a className="flex m-1.5 text-slate-50 text-center">
                     {tag}
                   </a>
@@ -107,13 +103,11 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
         { /* {project tags} */
           experience.skillsTought?.length != 0 &&
 
-          <div className={(screenWidth < responsiveWidthlimit ? 'justify-between mb-2.5 flex flex-wrap' 
-          : 'justify-between mb-2.5 flex-nowrap' 
-          )}>
+          <div className="justify-between mb-2.5 flex flex-wrap">
           {
             experience.skillsTought.map((tag: string, experienceTagIndex) => {
               return (
-                <div key={experienceTagIndex} className="inline-block align-middle bg-slate-500 rounded ml-1.5 mb-1.5">
+                <div key={experienceTagIndex} className="inline-block align-middle bg-slate-500 rounded mx-1.5 mb-1.5">
                   <a className="flex m-1.5 text-slate-50 text-center">
                     {tag}
                   </a>
@@ -128,9 +122,7 @@ const ExperienceSheet: React.FC<{screenWidth: number, experience: Experience}> =
   );
 }
 
-const Experiences: React.FC = () => {
-
-  const [screenWidth, setScreenWidth] = useState(responsiveWidthlimit + 1);
+const Experiences: React.FC<{screenWidth: number}> = ({screenWidth}) => {
 
   const experiences: Experience[] = [
     {
@@ -185,18 +177,11 @@ const Experiences: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", () => {
-      setScreenWidth(window.innerWidth);
-    });
-  }, []);
-
   return (
     <section>
       <SectionTitle title="Experiences"/>
 
-      {(screenWidth < responsiveWidthlimit)? <div className="grid grid-cols-1 gap-4 m-2">
+      {(screenWidth < RESPONSIVE_WIDTH_LIMIT)? <div className="grid grid-cols-1 gap-4 m-2">
         {
           experiences.map((experience: Experience, experienceIndex) => {
             return (

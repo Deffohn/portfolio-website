@@ -1,11 +1,8 @@
-"use client";
 import { getBaseUrl } from '@/utils/baseUrl';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { SectionTitle } from './SectionTitle';
 import { motion } from 'framer-motion';
-
-const responsiveWidthlimit: number = 850;
+import { RESPONSIVE_WIDTH_LIMIT } from '@/app/page';
 
 type ProjectLink = {
   link: string,
@@ -26,11 +23,11 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
 ) => {
   
   return (
-    <div className={(screenWidth < responsiveWidthlimit ? 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
+    <div className={(screenWidth < RESPONSIVE_WIDTH_LIMIT ? 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
     : 'flex flex-1 flex-col mx-2.5 my-2.5 justify-between' 
     )}>
       { /* {project title} */
-        !(screenWidth < responsiveWidthlimit) && <ProjectTitle contentInput={contentInput}/>
+        !(screenWidth < RESPONSIVE_WIDTH_LIMIT) && <ProjectTitle contentInput={contentInput}/>
       }
       { /* {project links} */
         contentInput.projectLinks && contentInput.projectLinks?.length != 0 &&
@@ -84,7 +81,7 @@ const ProjectDetailsContent: React.FC<{screenWidth: number, contentInput: Projec
       { /* {project tags} */
         contentInput.projectTags && contentInput.projectTags?.length != 0 &&
 
-        <div className={(screenWidth < responsiveWidthlimit ? 'justify-between mb-2.5 flex flex-wrap' 
+        <div className={(screenWidth < RESPONSIVE_WIDTH_LIMIT ? 'justify-between mb-2.5 flex flex-wrap' 
         : 'justify-between mb-2.5 shrink-0 flex-nowrap max-w-md' 
         )}>
         {
@@ -128,7 +125,7 @@ const ProjectSplitter: React.FC = () => {
 const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectContentInput}> = (
   {screenWidth, contentInput}
 ) => {
-  if (screenWidth < responsiveWidthlimit) {
+  if (screenWidth < RESPONSIVE_WIDTH_LIMIT) {
     return (
       <div className='w-full'>
         <div className="flex flex-col m-3 justify-between items-center rounded-md shadow-2xl bg-slate-500">
@@ -177,9 +174,7 @@ const ProjectComponent: React.FC<{screenWidth: number, contentInput: ProjectCont
   }
 };
 
-const Projects: React.FC = () => {
-
-  const [screenWidth, setScreenWidth] = useState(responsiveWidthlimit + 1);
+const Projects: React.FC<{screenWidth: number}> = ({screenWidth}) => {
 
   const projects: ProjectContentInput[] = [
     {
@@ -254,14 +249,7 @@ const Projects: React.FC = () => {
     },
   ];
 
-  useEffect(() => {
-    setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", () => {
-      setScreenWidth(window.innerWidth);
-    });
-  }, []);
-
-  if (screenWidth < responsiveWidthlimit) {
+  if (screenWidth < RESPONSIVE_WIDTH_LIMIT) {
     return (
       <div>
         <SectionTitle title='Projects'/>
