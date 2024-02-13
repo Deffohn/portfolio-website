@@ -229,7 +229,7 @@ const Projects: React.FC<{screenWidth: number}> = ({screenWidth}) => {
     {
       illustrationPath: "/projects/devexpert-platform.png",
       projectName: "DevExpert Platform",
-      projectDescription: "DevExpert Platform is a collaborative student project with @vecil and @zuxaw back in early 2022 during our M1 at ISEN Toulon.\n"+
+      projectDescription: "DevExpert Platform is a collaborative student project with Vincent Dely (@vecil) and Hugo Cascio (@zuxaw) back in early 2022 during our M1 at ISEN Toulon.\n"+
                           "This project was to help user directly meet with experts in various dev skills, with the ability to rank and to add a tip to the expert if the user was satisfied with the help.\n"+
                           "My main task was to implement both ranking and matching algorithms and microservices as a Flask API, supported by a mongoDB database.",
       projectTags: [
