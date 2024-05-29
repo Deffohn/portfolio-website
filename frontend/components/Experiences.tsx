@@ -126,6 +126,19 @@ const Experiences: React.FC<{screenWidth: number}> = ({screenWidth}) => {
 
   const experiences: Experience[] = [
     {
+      name: "Software Developer Intern",
+      description: "Working on the startup-project tool, which is a kind of social network, environment created around the sharing of AI Tools specialized in medicine (datasets & models).\n"+
+      "Iterating on all features of the project, from cleaning UI/UX of the website, fixing bugs, bringing DevOps, big data and sofware engineering council and complementary vision to the project, bringing a bit of France into an international multi-disciplinary team.",
+      at: "EasyMedAi",
+      location: "Barcelona, Spain",
+      startDate: new Date(2024, 5, 13),
+      icon: "https://media.licdn.com/dms/image/D4E0BAQG-6ied68VDkg/company-logo_200_200/0/1711395342794?e=2147483647&v=beta&t=_PxUoIv86bMynVCnnVIPfWBW_m0AL14aAvGz-Z_fPcI",
+      skillsTought: [
+        "DevOps", "Python", "Backend", "Jinja2", "MongoDB", "TurboGears2", "Backend", "Docker", "GitHub", "Git", "Docker Compose", "Javascript", "HTML", "CSS", "AWS",
+      ],
+      url: "https://easymedai.com/",
+    },
+    {
       name: "Apprentice Developer",
       description: "Working on the information system intern to the company, with goal to automate the cartography of the projects, products and microservices, "+
       "centralizing knowledge and expliciting teams responsabilities.\n"+
